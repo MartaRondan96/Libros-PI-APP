@@ -7,6 +7,8 @@ import '../ui/input_decorations.dart';
 import '../widgets/widgets.dart';
 
 class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +21,8 @@ class RegisterScreen extends StatelessWidget {
               child: Column(
             children: [
               SizedBox(height: 10),
-              Text('Create Account',
-                  style: Theme.of(context).textTheme.headline4),
+              Text('Crear una cuenta',
+                  style: Theme.of(context).textTheme.headlineMedium),
               SizedBox(height: 30),
               ChangeNotifierProvider(
                   create: (_) => RegisterFormProvider(), child: _RegisterForm())
@@ -34,7 +36,7 @@ class RegisterScreen extends StatelessWidget {
                       MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
                   shape: MaterialStateProperty.all(StadiumBorder())),
               child: Text(
-                'Log In',
+                'Iniciar sesión',
                 style: TextStyle(fontSize: 18, color: Colors.black87),
               )),
           SizedBox(height: 50),
@@ -69,8 +71,8 @@ class _RegisterForm extends StatelessWidget {
               autocorrect: false,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'dni',
-                  labelText: 'Dni',
+                  hintText: 'password',
+                  labelText: 'Password',
                   prefixIcon: Icons.account_circle_sharp),
               onChanged: (value) => registerForm.email = value,
             ),
@@ -79,9 +81,9 @@ class _RegisterForm extends StatelessWidget {
               autocorrect: false,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'name',
-                  labelText: 'Name',
-                  prefixIcon: Icons.text_decrease),
+                  hintText: 'Email',
+                  labelText: 'Email',
+                  prefixIcon: Icons.email),
               onChanged: (value) => registerForm.password = value,
             ),
             SizedBox(height: 30),
@@ -115,15 +117,15 @@ class _RegisterForm extends StatelessWidget {
                             registerForm.email);
 
                         if (errorMessage == '200') {
-                          customToast('Registered', context);
+                          customToast('Registrado con éxito', context);
                           Navigator.pushReplacementNamed(context, 'login');
                         } else if (errorMessage == '500') {
                           // TODO: mostrar error en pantalla
-                          customToast('User registered', context);
+                          customToast('Ya existe una cuenta con esos datos', context);
 
                           registerForm.isLoading = false;
                         } else {
-                          customToast('Server error', context);
+                          customToast('Error de servidor', context);
                         }
                       })
           ],

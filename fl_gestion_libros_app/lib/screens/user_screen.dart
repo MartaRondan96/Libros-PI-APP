@@ -15,6 +15,7 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
+  //Cambiar los servicios por LibrosService
   final appointmentService = AppointmentService();
   final userService = UserService();
 
@@ -23,7 +24,8 @@ class _UserScreenState extends State<UserScreen> {
   String user = "";
   int cont = 0;
   bool desactivate = true;
-
+  //Metodo para cargar todos los libros
+  //Mirar el servicio de usuarios en el proyecto de moviles
   Future getAppointments() async {
     await appointmentService.getAppointmentsUser(await AuthService().readId());
     setState(() {
@@ -35,13 +37,9 @@ class _UserScreenState extends State<UserScreen> {
       }
 
       appointmentBuscar = appointments;
-      // for (int i = 0; i < appointments.length; i++) {
-      //   appointmentBuscar
-      //       .removeWhere((element) => (element.id == appointments[i].id));
-      // }
     });
   }
-
+  //Metodo para obtener el usuario
   Future getUser() async {
     await userService.getUser();
     String id = await userService.getUser() as String;
@@ -53,11 +51,7 @@ class _UserScreenState extends State<UserScreen> {
   @override
   void initState() {
     super.initState();
-    // ignore: avoid_print
-    print('iniciando');
     getAppointments();
-    //getUser();
-    // getFamilies();
   }
 
   void _runFilter(String enteredKeyword) {

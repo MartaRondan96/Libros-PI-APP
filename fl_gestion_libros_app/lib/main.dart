@@ -1,7 +1,7 @@
 import 'package:fl_gestion_libros_app/providers/providers.dart';
+import 'package:fl_gestion_libros_app/screens/catalogo_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fl_gestion_libros_app/screens/prueba.dart';
 
 import 'package:fl_gestion_libros_app/screens/screens.dart';
 import 'package:fl_gestion_libros_app/screens/update_screen.dart';
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           'register': (_) => RegisterScreen(),
           // 'updatescreen': (_) => UpdateScreen(),
           'userscreen': (_) => const UserScreen(),
-          'managerscreen': (_) => const Prueba(),
+          'catalogo_screen': (_) => Catalogo_screen(),
         },
         scaffoldMessengerKey: NotificationsService.messengerKey,
         theme: ThemeData.light().copyWith(

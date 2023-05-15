@@ -14,6 +14,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         body: AuthBackground(
             child: SingleChildScrollView(
       child: Column(
@@ -115,7 +116,7 @@ class _LoginForm extends StatelessWidget {
                             customToast('Usuario no activo', context);
                           } else {
                               Navigator.pushReplacementNamed(
-                                  context, 'userscreen');
+                                  context, 'catalogo_screen');
                           }
                         } else {
                           customToast(

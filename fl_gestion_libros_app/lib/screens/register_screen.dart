@@ -12,6 +12,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         body: AuthBackground(
             child: SingleChildScrollView(
       child: Column(
@@ -59,9 +60,9 @@ class _RegisterForm extends StatelessWidget {
           children: [
             TextFormField(
               autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'username',
+                  hintText: 'Username',
                   labelText: 'Username',
                   prefixIcon: Icons.account_circle_sharp),
               onChanged: (value) => registerForm.username = value,
@@ -69,9 +70,10 @@ class _RegisterForm extends StatelessWidget {
             SizedBox(height: 30),
             TextFormField(
               autocorrect: false,
+              obscureText: true,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'password',
+                  hintText: 'Password',
                   labelText: 'Password',
                   prefixIcon: Icons.account_circle_sharp),
               onChanged: (value) => registerForm.email = value,
@@ -79,7 +81,7 @@ class _RegisterForm extends StatelessWidget {
             SizedBox(height: 30),
             TextFormField(
               autocorrect: false,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.authInputDecoration(
                   hintText: 'Email',
                   labelText: 'Email',

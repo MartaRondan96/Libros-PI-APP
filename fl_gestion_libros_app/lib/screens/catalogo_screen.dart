@@ -2,7 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_gestion_libros_app/widgets/widgets.dart';
 import 'package:fl_gestion_libros_app/services/services.dart';
-import '../models/libro.dart';
+import '../models/models.dart';
 
 class Catalogo_screen extends StatefulWidget {
   const Catalogo_screen({Key? key}) : super(key: key);
@@ -56,14 +56,14 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
       width: double.infinity,
       height: size.height * 0.5,
       child: Swiper(
-        itemCount: 20,
+        itemCount: libros.length,
         layout: SwiperLayout.STACK,
         itemWidth: size.width * 0.6,
         itemHeight: size.height * 0.4,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () => Navigator.pushNamed(context, 'details',
-                arguments: 'movie-instance'),
+                arguments: libros[index]),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: 
@@ -77,7 +77,6 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
         },
       ),
     ),
-            MovieSlider(),
           ],
         ),
       ),

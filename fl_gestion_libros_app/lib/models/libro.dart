@@ -3,7 +3,7 @@ class Libro {
   String? titulo;
   String? autor;
   int? pag;
-  int? nota;
+  double? nota;
   String? imagen;
   // List<Null>? comentariosList;
   // List<Null>? listValoraciones;

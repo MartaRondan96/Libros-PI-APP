@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LibroService extends ChangeNotifier {
-  final String _baseUrl = '192.168.1.42:8080';
+  final String _baseUrl = '192.168.1.41:8080';
   bool isLoading = true;
   List<Libro> libros = [];
   String l = "";
@@ -37,11 +37,40 @@ class LibroService extends ChangeNotifier {
               isbn: e['isbn']
             ))
         .toList();
-    librosList = libros;
+    libros = librosList;
 
     isLoading = false;
     notifyListeners();
 
     return librosList;
+  }
+  
+  Future<Libro> getLibros(int id) async {
+    isLoading = true;
+    notifyListeners();
+    final url = Uri.http(_baseUrl, '/api/libros/$id');
+    String? token = await AuthService().readToken();
+
+    final resp = await http.get(
+      url,
+      headers: {"Authorization": "Bearer $token"},
+    );
+   final Map<String, dynamic> decodedResp = json.decode(resp.body);
+  Libro libroresp = Libro(
+              id: decodedResp['id'],
+              titulo: decodedResp['titulo'],
+              autor: decodedResp['autor'],
+              pag: decodedResp['pag'],
+              nota: decodedResp['nota'],
+              imagen: decodedResp['imagen'],
+              isbn: decodedResp['isbn']
+    );
+           
+    libro = libroresp;
+
+    isLoading = false;
+    notifyListeners();
+
+    return libroresp;
   }
 }

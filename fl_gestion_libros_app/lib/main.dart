@@ -1,5 +1,6 @@
 import 'package:fl_gestion_libros_app/providers/providers.dart';
 import 'package:fl_gestion_libros_app/screens/catalogo_screen.dart';
+import 'package:fl_gestion_libros_app/screens/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -57,8 +58,8 @@ class MyApp extends StatelessWidget {
           'home': (_) => const HomeScreen(),
           'login': (_) => LoginScreen(),
           'register': (_) => RegisterScreen(),
-          // 'updatescreen': (_) => UpdateScreen(),
-          'userscreen': (_) => const UserScreen(),
+          'details': (_) => DetailsScreen(),
+          // 'userscreen': (_) => const UserScreen(),
           'catalogo_screen': (_) => Catalogo_screen(),
         },
         scaffoldMessengerKey: NotificationsService.messengerKey,

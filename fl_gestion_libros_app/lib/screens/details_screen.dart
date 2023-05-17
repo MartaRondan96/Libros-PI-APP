@@ -4,8 +4,9 @@ import 'package:fl_gestion_libros_app/services/services.dart';
 import '../Models/models.dart';
 
 class DetailsScreen extends StatefulWidget {
-  const DetailsScreen({Key? key}) : super(key: key);
 
+  final int idLibro;
+  DetailsScreen({required this.idLibro});
   @override
   State<DetailsScreen> createState() => _DetailsScreen_state();
 }
@@ -20,9 +21,10 @@ class _DetailsScreen_state extends State<DetailsScreen> {
   bool desactivate = true;
 
   Future getLibro() async {
-    await libroService.getLibros();
+    await libroService.getLibros(widget.idLibro);
     setState(() {
       libro = libroService.libro;
+      print(libro.titulo);
       // for (int i = 0; i < appointments.length; i++) {
       //   appointmentBuscar
       //       .removeWhere((element) => (element.id == appointments[i].id));

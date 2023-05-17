@@ -61,20 +61,22 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
         itemWidth: size.width * 0.6,
         itemHeight: size.height * 0.4,
         itemBuilder: (context, index) {
+          String image='assets/'+libros[index].imagen!;
           return GestureDetector(
-            onTap: () => Navigator.pushNamed(context, 'details',
-                arguments: libros[index]),
+            onTap: () => Navigator.pushNamed(context, 'details',arguments: libros[index].id),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: 
-                const FadeInImage(
-                  placeholder: AssetImage('assets/no-image.jpg'),
-                  image: AssetImage('assets/no-image.jpg'),
+                FadeInImage(
+                  placeholder: const AssetImage('assets/no-image.jpg'),
+                  image: AssetImage(image),
                   fit: BoxFit.cover,
                 ),
+
             ),
           );
         },
+
       ),
     ),
           ],

@@ -54,11 +54,19 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'fl_gestion_libros_app',
         initialRoute: 'login',
+        onGenerateRoute: (settings) {
+        if (settings.name == 'details') {
+          final int id = settings.arguments as int;
+          return MaterialPageRoute(
+            builder: (context) => DetailsScreen(idLibro: id),
+          );
+        }
+        return null;
+      },
         routes: {
           'home': (_) => const HomeScreen(),
           'login': (_) => LoginScreen(),
           'register': (_) => RegisterScreen(),
-          'details': (_) => DetailsScreen(),
           // 'userscreen': (_) => const UserScreen(),
           'catalogo_screen': (_) => Catalogo_screen(),
         },

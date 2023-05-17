@@ -4,68 +4,43 @@ import 'package:fl_gestion_libros_app/services/services.dart';
 import '../Models/models.dart';
 
 class DetailsScreen extends StatefulWidget {
-
   final int idLibro;
+
   DetailsScreen({required this.idLibro});
+
   @override
-  State<DetailsScreen> createState() => _DetailsScreen_state();
+  State<DetailsScreen> createState() => _DetailsScreen_state(idLibro: idLibro);
 }
+
 class _DetailsScreen_state extends State<DetailsScreen> {
+  final int idLibro;
   final libroService = LibroService();
 
-  List<Libro> libros = [];
+  _DetailsScreen_state({required this.idLibro});
 
-  Libro libro = Libro();
-  String user = "";
-  int cont = 0;
-  bool desactivate = true;
-
-  Future getLibro() async {
-    await libroService.getLibros(widget.idLibro);
-    setState(() {
-      libro = libroService.libro;
-      print(libro.titulo);
-      // for (int i = 0; i < appointments.length; i++) {
-      //   appointmentBuscar
-      //       .removeWhere((element) => (element.id == appointments[i].id));
-      // }
-    });
+  Future<Libro> getLibro() async {
+    await libroService.getLibros(idLibro);
+    return libroService.libro;
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    getLibro();
-  }
   @override
   Widget build(BuildContext context) {
-    //To do: chage later for movie instance
-    final String movie =
-        ModalRoute.of(context)?.settings.arguments.toString() ?? 'no-movie';
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          _CustomAppBar(),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              _PosterAndTitle(),
-              _OverView(),
-              CastingCards(),
-            ]),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class _CustomAppBar extends StatelessWidget {
-  const _CustomAppBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
+      body: FutureBuilder<Libro>(
+        future: getLibro(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // Muestra un indicador de carga mientras se obtienen los datos
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            // Maneja cualquier error que pueda ocurrir durante la obtención de datos
+            return Center(child: Text('Error al obtener los datos'));
+          } else if (snapshot.hasData) {
+            // Los datos se han obtenido correctamente
+            final Libro libro = snapshot.data!;
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
       backgroundColor: Colors.indigo,
       expandedHeight: 200,
       floating: false,
@@ -79,7 +54,7 @@ class _CustomAppBar extends StatelessWidget {
           padding: EdgeInsets.only(bottom: 10),
           color: Colors.black12,
           child: Text(
-            'movie.title',
+          libro.titulo!,
             style: TextStyle(fontSize: 16),
           ),
         ),
@@ -89,10 +64,25 @@ class _CustomAppBar extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
+    ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    _PosterAndTitle(),
+                    _OverView(),
+                    CastingCards(),
+                  ]),
+                ),
+              ],
+            );
+          } else {
+            // No hay datos disponibles
+            return Center(child: Text('No hay datos disponibles'));
+          }
+        },
+      ),
     );
   }
 }
-
 class _PosterAndTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

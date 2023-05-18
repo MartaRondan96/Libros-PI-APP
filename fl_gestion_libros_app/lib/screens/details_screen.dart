@@ -115,7 +115,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                    Container(
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                     child: Text(
-                      'Esto es una prueba',
+                      libro.resumen!,
                       textAlign: TextAlign.justify,
                       style: Theme.of(context).textTheme.subtitle1,
                     ),

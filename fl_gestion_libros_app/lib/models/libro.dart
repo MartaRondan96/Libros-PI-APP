@@ -2,6 +2,7 @@ class Libro {
   int? id;
   String? titulo;
   String? autor;
+  String? resumen;
   int? pag;
   double? nota;
   String? imagen;
@@ -13,6 +14,7 @@ class Libro {
       {this.id,
       this.titulo,
       this.autor,
+      this.resumen,
       this.pag,
       this.nota,
       this.imagen,
@@ -24,6 +26,7 @@ class Libro {
     id = json['id'];
     titulo = json['titulo'];
     autor = json['autor'];
+    resumen = json['resumen'];
     pag = json['pag'];
     nota = json['nota'];
     imagen = json['imagen'];

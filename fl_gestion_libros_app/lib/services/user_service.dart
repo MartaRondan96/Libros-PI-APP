@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:fl_gestion_libros_app/Models/models.dart';
 
 class UserService extends ChangeNotifier {
-  final String _baseUrl = '192.168.1.42:8080';
+  final String _baseUrl = '192.168.1.37:8080';
   bool isLoading = true;
   String usuario = "";
   final storage = const FlutterSecureStorage();

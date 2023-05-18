@@ -25,10 +25,6 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
     await libroService.getListLibros();
     setState(() {
       libros = libroService.libros;
-      // for (int i = 0; i < appointments.length; i++) {
-      //   appointmentBuscar
-      //       .removeWhere((element) => (element.id == appointments[i].id));
-      // }
     });
   }
 

@@ -39,9 +39,9 @@ class _Fav_screenState extends State<Fav_screen> {
      final size = MediaQuery.of(context).size;
      void _onItemTapped(int index) {
       if (index == 0) {
-        Navigator.pushReplacementNamed(context, 'fav_screen');
-      } else {
         Navigator.pushReplacementNamed(context, 'catalogo_screen');
+      } else {
+        Navigator.pushReplacementNamed(context, 'fav_screen');
         }
         }
     return Scaffold(
@@ -92,7 +92,7 @@ class _Fav_screenState extends State<Fav_screen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite_border), label: 'Favoritos'),
         ],
-        currentIndex: 0, //New
+        currentIndex: 1, //New
         onTap: _onItemTapped,
       ),
     );

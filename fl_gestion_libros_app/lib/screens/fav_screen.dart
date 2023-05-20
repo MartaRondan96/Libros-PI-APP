@@ -4,15 +4,15 @@ import 'package:fl_gestion_libros_app/widgets/widgets.dart';
 import 'package:fl_gestion_libros_app/services/services.dart';
 import '../models/models.dart';
 
-class Catalogo_screen extends StatefulWidget {
-  const Catalogo_screen({Key? key}) : super(key: key);
+class Fav_screen extends StatefulWidget {
+  const Fav_screen({Key? key}) : super(key: key);
 
   @override
-  State<Catalogo_screen> createState() => _Catalogo_screenState();
+  State<Fav_screen> createState() => _Fav_screenState();
 }
 
-class _Catalogo_screenState extends State<Catalogo_screen> {
-  final libroService = LibroService();
+class _Fav_screenState extends State<Fav_screen> {
+  final favService = FavService();
 
   List<Libro> libros = [];
 
@@ -21,10 +21,10 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
   int cont = 0;
   bool desactivate = true;
 
-  Future getLibros() async {
-    await libroService.getListLibros();
+  Future getLibrosFav() async {
+    await favService.getListLibrosFav();
     setState(() {
-      libros = libroService.libros;
+      libros = favService.libros;
     });
   }
 
@@ -32,21 +32,21 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
   void initState() {
     super.initState();
 
-    getLibros();
+    getLibrosFav();
   }
   @override
   Widget build(BuildContext context) {
      final size = MediaQuery.of(context).size;
      void _onItemTapped(int index) {
       if (index == 0) {
-        Navigator.pushReplacementNamed(context, 'catalogo_screen');
-      } else {
         Navigator.pushReplacementNamed(context, 'fav_screen');
+      } else {
+        Navigator.pushReplacementNamed(context, 'catalogo_screen');
         }
         }
     return Scaffold(
       appBar: AppBar(
-        title: Text('Catalogo de libros'),
+        title: Text('Libros favoritos'),
         elevation: 0,
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.search_outlined))
@@ -87,7 +87,7 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+         BottomNavigationBarItem(
               icon: Icon(Icons.book), label: 'Libros'),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite_border), label: 'Favoritos'),

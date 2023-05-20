@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
  
  class FavService extends ChangeNotifier {
 
-  final String _baseUrl = '192.168.1.37:8080';
+  final String _baseUrl = '192.168.1.39:8080';
   final libroService = LibroService();
   bool isLoading = true;
   List<Libro> libros = [];
@@ -32,7 +32,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
       headers: {"Authorization": "Bearer $token"},
     );
     final List<dynamic> decodedResp = json.decode(resp.body);
-
+    print("DECODEDRESP EN GETLISTFAV");
+    print(decodedResp);
+    // listFavs = decodedResp.map((e) => int.parse(e)).toList();
     isLoading = false;
     notifyListeners();
 
@@ -41,16 +43,21 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
   Future<List> getListLibrosFav() async {
     listLibrosFav.clear();
-    List<dynamic> favs = await getListFavs();
+    // await getListFavs();
+    List<dynamic> favs = await getListFavs();;
+    print('Lista favs');
+    print(favs);
     isLoading = true;
     notifyListeners();
-
     for (var i in favs) {
+      print("BUCLE");
+      print(await libroService.getLibros(i));
       listLibrosFav.add(await libroService.getLibros(i));
     }
     isLoading = false;
     notifyListeners();
-
+    print(libros);
+    libros = listLibrosFav;
     return listLibrosFav;
   }
 

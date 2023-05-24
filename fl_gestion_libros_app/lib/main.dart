@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:fl_gestion_libros_app/screens/screens.dart';
-import 'package:fl_gestion_libros_app/screens/update_screen.dart';
 import 'package:fl_gestion_libros_app/services/services.dart';
 import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 

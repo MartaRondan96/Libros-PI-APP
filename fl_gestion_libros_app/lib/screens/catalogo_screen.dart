@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_gestion_libros_app/widgets/widgets.dart';
 import 'package:fl_gestion_libros_app/services/services.dart';
+import 'package:provider/provider.dart';
 import '../models/models.dart';
 
 class Catalogo_screen extends StatefulWidget {
@@ -13,7 +14,7 @@ class Catalogo_screen extends StatefulWidget {
 
 class _Catalogo_screenState extends State<Catalogo_screen> {
   final libroService = LibroService();
-
+  
   List<Libro> libros = [];
 
   Libro libro = Libro();
@@ -46,10 +47,22 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
         }
     return Scaffold(
       appBar: AppBar(
-        title: Text('Catalogo de libros'),
+        title: Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.login_outlined),
+              color: Color.fromRGBO(0, 0, 0, 1),
+              onPressed: () {
+                Provider.of<AuthService>(context, listen: false).logout();
+                Navigator.pushReplacementNamed(context, 'login');
+              },
+            ),
+            Text('Catalogo de libros'),
+          ],
+        ),
         elevation: 0,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.search_outlined))
+          // IconButton(onPressed: () {}, icon: Icon(Icons.search_outlined))
         ],
       ),
       body: SingleChildScrollView(
@@ -75,11 +88,9 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
                   image: AssetImage(image),
                   fit: BoxFit.cover,
                 ),
-
             ),
           );
         },
-
       ),
     ),
           ],

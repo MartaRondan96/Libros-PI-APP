@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fl_gestion_libros_app/widgets/widgets.dart';
 import 'package:fl_gestion_libros_app/services/services.dart';
+
+import 'package:provider/provider.dart';
 import '../Models/models.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -15,6 +17,11 @@ class DetailsScreen extends StatefulWidget {
 class _DetailsScreen_state extends State<DetailsScreen> {
   final int idLibro;
   final libroService = LibroService();
+  final favService = FavService();
+  Icon iconito=Icon(Icons.favorite_outline_rounded, color: Colors.white);
+  bool f =false;
+  List<bool> isChecked = [];
+  List<dynamic> listFavs = [];
 
   _DetailsScreen_state({required this.idLibro});
 
@@ -23,6 +30,36 @@ class _DetailsScreen_state extends State<DetailsScreen> {
     return libroService.libro;
   }
 
+  Future<void> getListFav() async {
+     await favService.getListFavs();
+    setState(() {
+      listFavs = favService.listFavs;
+      print("GETLISTFAV");
+      print(listFavs);
+    });
+  }
+  void getCheck()  {
+    print(idLibro);
+    print(listFavs);
+     setState(() {
+      if (listFavs.contains(idLibro)) {
+        print("true");
+        iconito = Icon(Icons.heart_broken_rounded, color: Colors.white);
+        f = true;
+      } else {
+        print("false");
+        iconito = Icon(Icons.favorite_outline_rounded, color: Colors.white);
+        f = false;
+      }
+    });
+    }
+@override
+  void initState() {
+    super.initState();
+    getListFav().then((value) => getCheck());
+
+    // getCheck();
+  }
   @override
   Widget build(BuildContext context) {
         final TextTheme textTheme = Theme.of(context).textTheme;
@@ -124,73 +161,35 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                 ),
               ],
             );
+
           } else {
             // No hay datos disponibles
             return Center(child: Text('No hay datos disponibles'));
           }
         },
       ),
+      floatingActionButton: RawMaterialButton(
+          onPressed: () {
+              if (f) {
+                favService.delFav(idLibro);
+                Navigator.pushReplacementNamed(context, 'details',arguments: idLibro);
+              } else {
+                favService.addFav(idLibro);
+                Navigator.pushReplacementNamed(context, 'details',arguments: idLibro);
+              }
+              getListFav();
+            // Provider.of<FavService>(context, listen: false).addFav(idLibro);
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          fillColor: Colors.blue,
+          child:  iconito,
+          constraints: BoxConstraints.tightFor(
+            width: 40.0,
+            height: 40.0,
+          ),
+        )
     );
   }
 }
-// class _PosterAndTitle extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     final TextTheme textTheme = Theme.of(context).textTheme;
-//     return Container(
-//       margin: EdgeInsets.only(top: 20),
-//       padding: EdgeInsets.symmetric(horizontal: 20),
-//       child: Row(
-//         children: [
-//           ClipRRect(
-//             borderRadius: BorderRadius.circular(20),
-//             child: FadeInImage(
-//               placeholder: AssetImage('assets/no-image.jpg'),
-//               image: NetworkImage('https://via.placeholder.com/200x300'),
-//               height: 150,
-//             ),
-//           ),
-//           SizedBox(width: 20),
-//           Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(
-//                 'movie.title',
-//                 style: textTheme.headline5,
-//                 overflow: TextOverflow.ellipsis,
-//                 maxLines: 2,
-//               ),
-//               Text(
-//                 'movie.subtitle',
-//                 style: textTheme.subtitle1,
-//                 overflow: TextOverflow.ellipsis,
-//                 maxLines: 2,
-//               ),
-//               Row(
-//                 children: [
-//                   Icon(Icons.star_outline, size: 15, color: Colors.grey),
-//                   SizedBox(width: 5),
-//                   Text('movie.voteAvarage', style: textTheme.caption)
-//                 ],
-//               ),
-//             ],
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class _OverView extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-//       child: Text(
-//         'Esto es una prueba',
-//         textAlign: TextAlign.justify,
-//         style: Theme.of(context).textTheme.subtitle1,
-//       ),
-//     );
-//   }
-// }

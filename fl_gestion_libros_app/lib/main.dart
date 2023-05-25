@@ -60,13 +60,18 @@ class MyApp extends StatelessWidget {
             builder: (context) => DetailsScreen(idLibro: id),
           );
         }
+        if (settings.name == 'comment') {
+          final int id = settings.arguments as int;
+          return MaterialPageRoute(
+            builder: (context) => ComentarioScreen(idLibro: id),
+          );
+        }
         return null;
       },
         routes: {
           'home': (_) => const HomeScreen(),
           'login': (_) => LoginScreen(),
           'register': (_) => RegisterScreen(),
-          // 'userscreen': (_) => const UserScreen(),
           'catalogo_screen': (_) => Catalogo_screen(),
           'fav_screen': (_) => Fav_screen(),
         },

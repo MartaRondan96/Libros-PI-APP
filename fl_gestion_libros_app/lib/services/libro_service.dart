@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LibroService extends ChangeNotifier {
-  final String _baseUrl = '192.168.1.40:8080';
+  final String _baseUrl = '192.168.1.37:8080';
   bool isLoading = true;
   List<Libro> libros = [];
   String l = "";

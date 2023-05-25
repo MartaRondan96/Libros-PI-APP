@@ -9,19 +9,19 @@ import '../services/services.dart';
 import '../ui/input_decorations.dart';
 import '../widgets/widgets.dart';
 
-class ComentarioScreen extends StatefulWidget {
+class ValoracionScreen extends StatefulWidget {
   final int idLibro;
-  const ComentarioScreen({required this.idLibro});
+  const ValoracionScreen({required this.idLibro});
 
   @override
-  State<ComentarioScreen> createState() =>
-      _ComentarioScreen(idLibro: idLibro);
+  State<ValoracionScreen> createState() =>
+      _ValoracionScreen(idLibro: idLibro);
 }
 
-class _ComentarioScreen extends State<ComentarioScreen> {
+class _ValoracionScreen extends State<ValoracionScreen> {
   final int idLibro;
 
-  _ComentarioScreen({required this.idLibro});
+  _ValoracionScreen({required this.idLibro});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _ComentarioScreen extends State<ComentarioScreen> {
                       style: Theme.of(context).textTheme.headline4),
                   SizedBox(height: 30),
                   ChangeNotifierProvider(
-                      create: (_) => ComentarioFormProvider(),
+                      create: (_) => ValoracionFormProvider(),
                       child: _Form(idLibro: idLibro))
                 ],
               )),
@@ -94,8 +94,8 @@ class __Form extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
-    final commentForm = Provider.of<ComentarioFormProvider>(context);
-    final comentarioService = ComentarioService();
+    final notaForm = Provider.of<ValoracionFormProvider>(context);
+    final valoracionService = ValoracionService();
     //final departmentProvider = Provider.of<DepartmentFormProvider>(context);
     List<dynamic> options = [
       [false, "Not Resolved"],
@@ -104,7 +104,7 @@ class __Form extends State<_Form> {
 
     return Container(
       child: Form(
-        key: commentForm.formKey,
+        key: notaForm.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
@@ -115,7 +115,7 @@ class __Form extends State<_Form> {
                   hintText: 'comentario',
                   labelText: 'comentario',
                   prefixIcon: Icons.summarize_rounded),
-              onChanged: (value) => commentForm.comentario = value,
+              onChanged: (value) => notaForm.valoracion = value,
               maxLines: null,
             ),
             SizedBox(height: 30),
@@ -128,28 +128,28 @@ class __Form extends State<_Form> {
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                     child: Text(
-                      commentForm.isLoading ? 'Wait' : 'Submit',
+                      notaForm.isLoading ? 'Wait' : 'Submit',
                       style: TextStyle(color: Colors.white),
                     )),
-                onPressed: commentForm.isLoading
+                onPressed: notaForm.isLoading
                     ? null
                     : () async {
-                        // if (commentForm.date.isUtc ||
-                        //     commentForm.hour.isEmpty ||
-                        //     commentForm.idDepartment == 0) {
+                        // if (notaForm.date.isUtc ||
+                        //     notaForm.hour.isEmpty ||
+                        //     notaForm.idDepartment == 0) {
                         //   customToast("Fiels can't be empty", context);
                         // } else {
                         FocusScope.of(context).unfocus();
                         final authService =
                             Provider.of<AuthService>(context, listen: false);
 
-                        if (!commentForm.isValidForm()) return;
+                        if (!notaForm.isValidForm()) return;
 
-                        commentForm.isLoading = true;
+                        notaForm.isLoading = true;
                         int idUser = user.id!;
                         // TODO: validar si el login es correcto
-                        final String? errorMessage = await comentarioService.addComment(
-                            idLibro, commentForm.comentario);
+                        final String? errorMessage = await valoracionService.addValoracion(
+                            idLibro, notaForm.valoracion);
 
                         if (errorMessage == '201') {
                           customToast('Created', context);
@@ -157,9 +157,9 @@ class __Form extends State<_Form> {
                               context, 'details', arguments:idLibro);
                         } else if (errorMessage == '500') {
                           // TODO: mostrar error en pantalla
-                          customToast('No se ha podido poner un comentario', context);
+                          customToast('No se ha podido poner la valoracion', context);
 
-                          commentForm.isLoading = false;
+                          notaForm.isLoading = false;
                         } else {
                           customToast('Server error', context);
                         }

@@ -18,11 +18,13 @@ class _DetailsScreen_state extends State<DetailsScreen> {
   final int idLibro;
   final libroService = LibroService();
   final favService = FavService();
+  final commentService = ComentarioService();
+
   Icon iconito=Icon(Icons.favorite_outline_rounded, color: Colors.white);
   bool f =false;
   List<bool> isChecked = [];
   List<dynamic> listFavs = [];
-
+  List<Comentario> listComments = [];
   _DetailsScreen_state({required this.idLibro});
 
   Future<Libro> getLibro() async {
@@ -34,20 +36,20 @@ class _DetailsScreen_state extends State<DetailsScreen> {
      await favService.getListFavs();
     setState(() {
       listFavs = favService.listFavs;
-      print("GETLISTFAV");
-      print(listFavs);
+    });
+  }
+   Future<void> getListComments() async {
+     await commentService.getListComentarios(idLibro);
+    setState(() {
+      listComments = commentService.comentarios;
     });
   }
   void getCheck()  {
-    print(idLibro);
-    print(listFavs);
      setState(() {
       if (listFavs.contains(idLibro)) {
-        print("true");
         iconito = Icon(Icons.heart_broken_rounded, color: Colors.white);
         f = true;
       } else {
-        print("false");
         iconito = Icon(Icons.favorite_outline_rounded, color: Colors.white);
         f = false;
       }
@@ -57,117 +59,149 @@ class _DetailsScreen_state extends State<DetailsScreen> {
   void initState() {
     super.initState();
     getListFav().then((value) => getCheck());
-
-    // getCheck();
+    getListComments();
   }
   @override
   Widget build(BuildContext context) {
         final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      body: FutureBuilder<Libro>(
-        future: getLibro(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // Muestra un indicador de carga mientras se obtienen los datos
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            // Maneja cualquier error que pueda ocurrir durante la obtención de datos
-            return Center(child: Text('Error al obtener los datos'));
-          } else if (snapshot.hasData) {
-            // Los datos se han obtenido correctamente
-            final Libro libro = snapshot.data!;
-            return CustomScrollView(
-              slivers: [
-                SliverAppBar(
-      backgroundColor: Colors.indigo,
-      expandedHeight: 200,
-      floating: false,
-      pinned: true,
-      flexibleSpace: FlexibleSpaceBar(
-        centerTitle: true,
-        titlePadding: EdgeInsets.all(0),
-        title: Container(
-          width: double.infinity,
-          alignment: Alignment.bottomCenter,
-          padding: EdgeInsets.only(bottom: 10),
-          color: Colors.black12,
-          child: Text(
-          libro.titulo!,
-            style: TextStyle(fontSize: 16),
+      body: SingleChildScrollView(
+        child: Column(
+        children: [
+          FutureBuilder<Libro>(
+            future: getLibro(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // Muestra un indicador de carga mientras se obtienen los datos
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                // Maneja cualquier error que pueda ocurrir durante la obtención de datos
+                return Center(child: Text('Error al obtener los datos'));
+              } else if (snapshot.hasData) {
+                // Los datos se han obtenido correctamente
+                final Libro libro = snapshot.data!;
+                return CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+          backgroundColor: Colors.indigo,
+          expandedHeight: 200,
+          floating: false,
+          pinned: true,
+          flexibleSpace: FlexibleSpaceBar(
+            centerTitle: true,
+            titlePadding: EdgeInsets.all(0),
+            title: Container(
+              width: double.infinity,
+              alignment: Alignment.bottomCenter,
+              padding: EdgeInsets.only(bottom: 10),
+              color: Colors.black12,
+              child: Text(
+              libro.titulo!,
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            background: FadeInImage(
+              placeholder: AssetImage('assets/loading.gif'),
+              image: NetworkImage('https://via.placeholder.com/500x300'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        background: FadeInImage(
-          placeholder: AssetImage('assets/loading.gif'),
-          image: NetworkImage('https://via.placeholder.com/500x300'),
-          fit: BoxFit.cover,
-        ),
-      ),
     ),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    //Poster and title
-                    Container(
-                    margin: EdgeInsets.only(top: 20),
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: FadeInImage(
-                            placeholder: AssetImage('assets/no-image.jpg'),
-                            image: AssetImage('assets/'+libro.imagen!),
-                            height: 200,
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    SliverList(
+                      delegate: SliverChildListDelegate([
+                        //Poster and title
+                        Container(
+                        margin: EdgeInsets.only(top: 20),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
                           children: [
-                            Text(
-                              libro.titulo!,
-                              style: textTheme.headline5,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: FadeInImage(
+                                placeholder: AssetImage('assets/no-image.jpg'),
+                                image: AssetImage('assets/'+libro.imagen!),
+                                height: 200,
+                              ),
                             ),
-                            Text(
-                              libro.autor!,
-                              style: textTheme.subtitle1,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                            Row(
+                            SizedBox(width: 20),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(Icons.star_outline, size: 15, color: Colors.grey),
-                                SizedBox(width: 5),
-                                Text(libro.nota!.toString(), style: textTheme.caption)
+                                Text(
+                                  libro.titulo!,
+                                  style: textTheme.headline5,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                                Text(
+                                  libro.autor!,
+                                  style: textTheme.subtitle1,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(Icons.star_outline, size: 15, color: Colors.grey),
+                                    SizedBox(width: 5),
+                                    Text(libro.nota!.toString(), style: textTheme.caption)
+                                  ],
+                                ),
                               ],
-                            ),
+                            )
                           ],
-                        )
-                      ],
+                        ),
+                      ),
+                      //Resumen del libro
+                       Container(
+                        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                        child: Text(
+                          libro.resumen!,
+                          textAlign: TextAlign.justify,
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ),
+                      ]),
                     ),
-                  ),
-                  //Resumen del libro
-                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                    child: Text(
-                      libro.resumen!,
-                      textAlign: TextAlign.justify,
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                  ),
-                  ]),
-                ),
-              ],
-            );
+                  ],
+                );
 
-          } else {
-            // No hay datos disponibles
-            return Center(child: Text('No hay datos disponibles'));
-          }
-        },
+              } else {
+                // No hay datos disponibles
+                return Center(child: Text('No hay datos disponibles'));
+              }
+            },
+          ),
+                TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.blue
+          ),
+          onPressed: () => Navigator.pushNamed(context, 'comment', arguments: idLibro),
+          child: Text('Añadir comentario'),
+        ),
+          ListView.separated(
+        itemCount: listComments.length,
+        itemBuilder: (context, index) => ListTile(
+            leading: const Icon(
+              Icons.favorite,
+              size: 30,
+            ),
+            contentPadding: const EdgeInsets.all(16),
+            title: Text("Autor" + 
+              listComments[index].user.toString(),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 2),
+                Text(listComments[index].comentario!),
+              ],
+            )),
+        separatorBuilder: (_, __) => const Divider(),
       ),
+        ],
+      ),),
       floatingActionButton: RawMaterialButton(
           onPressed: () {
               if (f) {

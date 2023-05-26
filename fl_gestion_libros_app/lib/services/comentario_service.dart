@@ -8,7 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
  
  class ComentarioService extends ChangeNotifier {
 
-  final String _baseUrl = '192.168.1.37:8080';
+  final String _baseUrl = '192.168.1.40:8080';
   final libroService = LibroService();
   bool isLoading = true;
   List<Comentario> comentarios = [];

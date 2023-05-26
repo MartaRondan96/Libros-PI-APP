@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:fl_gestion_libros_app/Models/models.dart';
 
 class UserService extends ChangeNotifier {
-  final String _baseUrl = '192.168.1.37:8080';
+  final String _baseUrl = '192.168.1.40:8080';
   bool isLoading = true;
   String usuario = "";
   final storage = const FlutterSecureStorage();
@@ -39,13 +39,9 @@ class UserService extends ChangeNotifier {
     String idUser = decodedResp['id'].toString();
     String usernameUser = decodedResp['username'].toString();
     String passwordUser = decodedResp['password'].toString();
-    String nameUser = decodedResp['name'].toString();
-    String surnameUser = decodedResp['surname'].toString();
-    String dniUser = decodedResp['dni'].toString();
     String enabledUser = decodedResp['surname'].toString();
     String roleUser = decodedResp['surname'].toString();
     String tokenUser = decodedResp['surname'].toString();
-    String idDepartmentUser = decodedResp['surname'].toString();
 
     User us = User(
         id: int.parse(idUser),

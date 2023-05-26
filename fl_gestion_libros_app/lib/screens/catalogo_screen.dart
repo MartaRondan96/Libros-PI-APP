@@ -14,7 +14,7 @@ class Catalogo_screen extends StatefulWidget {
 
 class _Catalogo_screenState extends State<Catalogo_screen> {
   final libroService = LibroService();
-  
+
   List<Libro> libros = [];
 
   Libro libro = Libro();
@@ -35,16 +35,18 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
 
     getLibros();
   }
+
   @override
   Widget build(BuildContext context) {
-     final size = MediaQuery.of(context).size;
-     void _onItemTapped(int index) {
+    final size = MediaQuery.of(context).size;
+    void _onItemTapped(int index) {
       if (index == 0) {
         Navigator.pushReplacementNamed(context, 'catalogo_screen');
       } else {
         Navigator.pushReplacementNamed(context, 'fav_screen');
-        }
-        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -57,7 +59,7 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
                 Navigator.pushReplacementNamed(context, 'login');
               },
             ),
-            Text('Catalogo de libros'),
+            Text('Catálogo de libros'),
           ],
         ),
         elevation: 0,
@@ -69,37 +71,36 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
         child: Column(
           children: [
             Container(
-      width: double.infinity,
-      height: size.height * 0.5,
-      child: Swiper(
-        itemCount: libros.length,
-        layout: SwiperLayout.STACK,
-        itemWidth: size.width * 0.6,
-        itemHeight: size.height * 0.4,
-        itemBuilder: (context, index) {
-          String image='assets/'+libros[index].imagen!;
-          return GestureDetector(
-            onTap: () => Navigator.pushNamed(context, 'details',arguments: libros[index].id),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: 
-                FadeInImage(
-                  placeholder: const AssetImage('assets/no-image.jpg'),
-                  image: AssetImage(image),
-                  fit: BoxFit.cover,
-                ),
+              width: double.infinity,
+              height: size.height * 0.5,
+              child: Swiper(
+                itemCount: libros.length,
+                layout: SwiperLayout.STACK,
+                itemWidth: size.width * 0.6,
+                itemHeight: size.height * 0.4,
+                itemBuilder: (context, index) {
+                  String image = 'assets/' + libros[index].imagen!;
+                  return GestureDetector(
+                    onTap: () => Navigator.pushReplacementNamed(context, 'details',
+                        arguments: libros[index].id),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: FadeInImage(
+                        placeholder: const AssetImage('assets/no-image.jpg'),
+                        image: AssetImage(image),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
-          );
-        },
-      ),
-    ),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.book), label: 'Libros'),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Libros'),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite_border), label: 'Favoritos'),
         ],

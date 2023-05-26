@@ -66,7 +66,7 @@ class _Fav_screenState extends State<Fav_screen> {
         itemBuilder: (context, index) {
           String image='assets/'+libros[index].imagen!;
           return GestureDetector(
-            onTap: () => Navigator.pushNamed(context, 'details',arguments: libros[index].id),
+            onTap: () => Navigator.pushReplacementNamed(context, 'details',arguments: libros[index].id),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: 

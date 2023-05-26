@@ -149,7 +149,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                       TextButton(
                         style:
                             TextButton.styleFrom(foregroundColor: Colors.blue),
-                        onPressed: () => Navigator.pushNamed(context, 'comment',
+                        onPressed: () => Navigator.pushReplacementNamed(context, 'comment',
                             arguments: idLibro),
                         child: Text('Añadir comentario'),
                       ),
@@ -195,8 +195,6 @@ class _DetailsScreen_state extends State<DetailsScreen> {
               favService.addFav(idLibro);
             }
             Navigator.pushReplacementNamed(context, 'details', arguments: idLibro);
-            getListFav();
-            getCheck();
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),

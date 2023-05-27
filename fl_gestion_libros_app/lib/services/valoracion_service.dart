@@ -20,13 +20,17 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
         'idLibro': idLibro,
         'puntos' : valoracion
       };
-      final url = Uri.http(_baseUrl, '/api/libros/addNota');
+      final url = Uri.http(_baseUrl, '/api/libros/nota');
 
       final resp = await http.post(
         url,
-        headers: {"Authorization": "Bearer $token"},
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": "Bearer $token"},
         body:  json.encode(valoracionData)
       );
+       isLoading = false;
+      notifyListeners();
       return resp.statusCode.toString();
     }
  

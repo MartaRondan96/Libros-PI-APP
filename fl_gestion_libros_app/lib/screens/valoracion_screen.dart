@@ -36,7 +36,7 @@ class _ValoracionScreen extends State<ValoracionScreen> {
                   child: Column(
                 children: [
                   SizedBox(height: 10),
-                  Text('New Report',
+                  Text('Valoración',
                       style: Theme.of(context).textTheme.headline4),
                   SizedBox(height: 30),
                   ChangeNotifierProvider(
@@ -53,7 +53,7 @@ class _ValoracionScreen extends State<ValoracionScreen> {
                           Colors.indigo.withOpacity(0.1)),
                       shape: MaterialStateProperty.all(StadiumBorder())),
                   child: Text(
-                    'Back',
+                    'Atrás',
                     style: TextStyle(fontSize: 18, color: Colors.black87),
                   )),
               SizedBox(height: 50),
@@ -98,8 +98,8 @@ class __Form extends State<_Form> {
     final valoracionService = ValoracionService();
     //final departmentProvider = Provider.of<DepartmentFormProvider>(context);
     List<dynamic> options = [
-      [false, "Not Resolved"],
-      [true, "Resolved"]
+      [false, "No Resuelto"],
+      [true, "Resuelto"]
     ];
 
     return Container(
@@ -110,11 +110,11 @@ class __Form extends State<_Form> {
           children: [
             TextFormField(
               autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.number,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'comentario',
-                  labelText: 'comentario',
-                  prefixIcon: Icons.summarize_rounded),
+                  hintText: 'valoración',
+                  labelText: 'Valoración',
+                  prefixIcon: Icons.add_chart_rounded),
               onChanged: (value) => notaForm.valoracion = value,
               maxLines: null,
             ),
@@ -128,42 +128,31 @@ class __Form extends State<_Form> {
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                     child: Text(
-                      notaForm.isLoading ? 'Wait' : 'Submit',
+                      notaForm.isLoading ? 'Espera' : 'Enviar',
                       style: TextStyle(color: Colors.white),
                     )),
                 onPressed: notaForm.isLoading
                     ? null
                     : () async {
-                        // if (notaForm.date.isUtc ||
-                        //     notaForm.hour.isEmpty ||
-                        //     notaForm.idDepartment == 0) {
-                        //   customToast("Fiels can't be empty", context);
-                        // } else {
                         FocusScope.of(context).unfocus();
                         final authService =
                             Provider.of<AuthService>(context, listen: false);
-
                         if (!notaForm.isValidForm()) return;
-
                         notaForm.isLoading = true;
                         int idUser = user.id!;
-                        // TODO: validar si el login es correcto
                         final String? errorMessage = await valoracionService.addValoracion(
                             idLibro, notaForm.valoracion);
-
-                        if (errorMessage == '201') {
+                            print(errorMessage);
+                        if (errorMessage == '200') {
                           customToast('Created', context);
                           Navigator.pushReplacementNamed(
                               context, 'details', arguments:idLibro);
                         } else if (errorMessage == '500') {
-                          // TODO: mostrar error en pantalla
-                          customToast('No se ha podido poner la valoracion', context);
-
+                          customToast('No se ha podido poner la valoración', context);
                           notaForm.isLoading = false;
                         } else {
                           customToast('Server error', context);
                         }
-                        // }
                       })
           ],
         ),

@@ -164,7 +164,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                                     Icon(Icons.star_outline,
                                         size: 15, color: Colors.grey),
                                     SizedBox(width: 5),
-                                    Text(libro.nota!.toString(),
+                                    Text(libro.nota!.toStringAsFixed(2),
                                         style: textTheme.caption)
                                   ],
                                 ),

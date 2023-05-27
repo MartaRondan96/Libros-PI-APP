@@ -141,7 +141,6 @@ class __Form extends State<_Form> {
                         int idUser = user.id!;
                         final String? errorMessage = await comentarioService
                             .addComment(idLibro, commentForm.comentario);
-                            print(errorMessage);
                         if (errorMessage == '200') {
                           customToast('Creado', context);
                           Navigator.pushReplacementNamed(context, 'details',

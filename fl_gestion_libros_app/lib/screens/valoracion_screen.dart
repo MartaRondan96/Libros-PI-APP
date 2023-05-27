@@ -142,7 +142,6 @@ class __Form extends State<_Form> {
                         int idUser = user.id!;
                         final String? errorMessage = await valoracionService.addValoracion(
                             idLibro, notaForm.valoracion);
-                            print(errorMessage);
                         if (errorMessage == '200') {
                           customToast('Created', context);
                           Navigator.pushReplacementNamed(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_gestion_libros_app/widgets/widgets.dart';
 import 'package:fl_gestion_libros_app/services/services.dart';
+import 'package:http/http.dart';
 
 import 'package:provider/provider.dart';
 import '../Models/models.dart';
@@ -13,24 +14,30 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreen_state extends State<DetailsScreen> {
+  _DetailsScreen_state({required this.idLibro});
   final int idLibro;
   final libroService = LibroService();
   final favService = FavService();
+  final userService = UserService();
   final commentService = ComentarioService();
-
   Icon iconito = Icon(Icons.favorite_outline_rounded, color: Colors.white);
   bool f = false;
   List<bool> isChecked = [];
   List<dynamic> listFavs = [];
   List<Comentario> listComments = [];
-  _DetailsScreen_state({required this.idLibro});
+  List<String> listUsername = [];
+  User user = User();
 
   Future<Libro> getLibro() async {
+    
+    print("EMPIEZA GET ");
     await libroService.getLibros(idLibro);
     return libroService.libro;
   }
 
   Future<void> getListFav() async {
+    
+    print("EMPIEZA GET FAVS");
     await favService.getListFavs();
     setState(() {
       listFavs = favService.listFavs;
@@ -38,33 +45,52 @@ class _DetailsScreen_state extends State<DetailsScreen> {
   }
 
   Future<void> getListComments() async {
+    print("EMPIEZA GET COMMENTS");
     await commentService.getListComentarios(idLibro);
     setState(() {
       listComments = commentService.comentarios;
     });
+    print(listComments);
   }
 
   void getCheck() {
-      setState(() {
-        if (listFavs.contains(idLibro)) {
-          iconito = Icon(Icons.heart_broken_rounded, color: Colors.white);
-          f = true;
-        } else {
-          iconito = Icon(Icons.favorite_outline_rounded, color: Colors.white);
-          f = false;
-        }
-      });
+    print("EMPIEZA GET CHECK");
+    setState(() {
+      if (listFavs.contains(idLibro)) {
+        iconito = Icon(Icons.heart_broken_rounded, color: Colors.white);
+        f = true;
+      } else {
+        iconito = Icon(Icons.favorite_outline_rounded, color: Colors.white);
+        f = false;
+      }
+    });
+  }
+
+  Future getUser() async {
+    print("EMPIEZA GET USER");
+    List<String> listUsers = [];
+    for (int i = 0; i < listComments.length; i++) {
+      User us = await userService.getUserById(listComments[i].idUsuario!);
+      listUsers.add(us.username!); 
+      print(us.username);
+    }
+   
+    setState(() {
+      listUsername = listUsers;
+    });
+    print(listUsers);
   }
 
   @override
   void initState() {
     super.initState();
     getListFav().then((value) => getCheck());
-    getListComments();
+    getListComments().then((value) => getUser());
   }
 
   @override
   Widget build(BuildContext context) {
+    print("EMPIEZA LA SCREEN");
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
         appBar: AppBar(
@@ -89,6 +115,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
             } else if (snapshot.hasData) {
               // Los datos se han obtenido correctamente
               final Libro libro = snapshot.data!;
+
               return CustomScrollView(
                 slivers: [
                   SliverToBoxAdapter(
@@ -102,7 +129,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                               borderRadius: BorderRadius.circular(20),
                               child: FadeInImage(
                                 placeholder: AssetImage('assets/no-image.jpg'),
-                                image: AssetImage('assets/' + libro.imagen!),
+                                image: AssetImage('assets/${libro.imagen!}'),
                                 height: 200,
                               ),
                             ),
@@ -149,7 +176,8 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                       TextButton(
                         style:
                             TextButton.styleFrom(foregroundColor: Colors.blue),
-                        onPressed: () => Navigator.pushReplacementNamed(context, 'comment',
+                        onPressed: () => Navigator.pushReplacementNamed(
+                            context, 'comment',
                             arguments: idLibro),
                         child: Text('Añadir comentario'),
                       ),
@@ -158,14 +186,14 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                   SliverFillRemaining(
                     child: ListView.separated(
                       itemCount: listComments.length,
-                      itemBuilder: (context, index) => ListTile(
+                     itemBuilder: (context, index) => ListTile(
                           leading: const Icon(
                             Icons.comment_rounded,
                             size: 30,
                           ),
                           contentPadding: const EdgeInsets.all(16),
                           title: Text(
-                            "Autor" + listComments[index].user.toString(),
+                            "Autor id " + listComments[index].idUsuario.toString(),
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
@@ -194,7 +222,8 @@ class _DetailsScreen_state extends State<DetailsScreen> {
             } else {
               favService.addFav(idLibro);
             }
-            Navigator.pushReplacementNamed(context, 'details', arguments: idLibro);
+            Navigator.pushReplacementNamed(context, 'details',
+                arguments: idLibro);
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),

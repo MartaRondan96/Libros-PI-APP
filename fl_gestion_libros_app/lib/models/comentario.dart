@@ -1,29 +1,25 @@
 import 'package:fl_gestion_libros_app/models/models.dart';
 class Comentario {
-  int? id;
+  String? id;
+  int? idUsuario;
   String? comentario;
-  User? user;
-  Libro? libro;
+  int? idLibro;
 
-  Comentario({this.id, this.comentario, this.user, this.libro});
+  Comentario({this.id, this.idUsuario, this.comentario, this.idLibro});
 
   Comentario.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    idUsuario = json['idUsuario'];
     comentario = json['comentario'];
-    user = json['User'] != null ? new User.fromJson(json['User']) : null;
-    libro = json['Libro'] != null ? new Libro.fromJson(json['Libro']) : null;
+    idLibro = json['idLibro'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['idUsuario'] = this.idUsuario;
     data['comentario'] = this.comentario;
-    // if (this.user != null) {
-    //   data['User'] = this.user!.toJson();
-    // }
-    // if (this.libro != null) {
-    //   data['Libro'] = this.libro!.toJson();
-    // }
+    data['idLibro'] = this.idLibro;
     return data;
   }
 }

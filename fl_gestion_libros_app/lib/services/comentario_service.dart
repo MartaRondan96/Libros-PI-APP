@@ -53,8 +53,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
     List<Comentario> comentariosList = decodedResp
         .map((e) => Comentario(
               id: e['id'],
-              user: e['user'],
-              libro: e['libro'],
+              idUsuario: e['idUsuario'],
+              idLibro: e['idLibro'],
               comentario: e['comentario']
             ))
         .toList();

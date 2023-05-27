@@ -13,9 +13,50 @@ class UserService extends ChangeNotifier {
   final String _baseUrl = '192.168.1.40:8080';
   bool isLoading = true;
   String usuario = "";
+  User u = User();
   final storage = const FlutterSecureStorage();
 
-  getUser() async {
+  getUserById(int id) async {
+    String? token = await AuthService().readToken();
+
+    final url = Uri.http(_baseUrl, '/all/$id');
+    isLoading = true;
+    notifyListeners();
+    final resp = await http.get(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": "Bearer $token"
+      },
+    );
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
+    print(decodedResp);
+    await storage.write(key: 'id', value: decodedResp['id'].toString());
+    isLoading = false;
+    notifyListeners();
+    int idUser = decodedResp['id'];
+  String usernameUser = decodedResp['username'].toString();
+  String passwordUser = decodedResp['password'].toString();
+  String emailUser= decodedResp['email'].toString();
+  bool enabledUser = decodedResp['enabled'];
+  String roleUser = decodedResp['surname'].toString();
+  String tokenUser = decodedResp['surname'].toString();
+    //Crear user
+
+    User us = User(
+        id: idUser,
+        username: usernameUser,
+        password: passwordUser,
+        email: emailUser,
+        enabled: enabledUser,
+        role: roleUser,
+        token: tokenUser);
+    u = us;
+    return us;
+  }
+
+   getUser() async {
     String? token = await AuthService().readToken();
     String? id = await AuthService().readId();
 
@@ -35,19 +76,21 @@ class UserService extends ChangeNotifier {
     await storage.write(key: 'id', value: decodedResp['id'].toString());
     isLoading = false;
     notifyListeners();
-    //Crear user
-    String idUser = decodedResp['id'].toString();
-    String usernameUser = decodedResp['username'].toString();
-    String passwordUser = decodedResp['password'].toString();
-    String enabledUser = decodedResp['surname'].toString();
-    String roleUser = decodedResp['surname'].toString();
+    int idUser = decodedResp['id'];
+  String usernameUser = decodedResp['username'].toString();
+  String passwordUser = decodedResp['password'].toString();
+  String emailUser= decodedResp['email'].toString();
+  bool enabledUser = decodedResp['enabled'];
+  String roleUser = decodedResp['surname'].toString();
     String tokenUser = decodedResp['surname'].toString();
+    //Crear user
 
     User us = User(
-        id: int.parse(idUser),
+        id: idUser,
         username: usernameUser,
         password: passwordUser,
-        enabled: bool.hasEnvironment(enabledUser),
+        email: emailUser,
+        enabled: enabledUser,
         role: roleUser,
         token: tokenUser);
 

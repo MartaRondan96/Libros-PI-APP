@@ -11,7 +11,8 @@ class User {
   // List<Null>? listValoraciones;
 
   User(
-      {this.id,
+      {
+      this.id,
       this.username,
       this.password,
       this.email,

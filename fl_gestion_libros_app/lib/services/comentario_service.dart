@@ -17,7 +17,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
   final storage = const FlutterSecureStorage();
 
-    Future addComment(int idLibro, String comentario)async {
+    Future addComment(int idLibro, String comentario) async {
       String? token = await AuthService().readToken();
 
       isLoading = true;
@@ -30,9 +30,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
       final resp = await http.post(
         url,
-        headers: {"Authorization": "Bearer $token"},
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": "Bearer $token"},
         body:  json.encode(commentData)
       );
+      isLoading = false;
+      notifyListeners();
       return resp.statusCode.toString();
     }
 

@@ -14,8 +14,7 @@ class ComentarioScreen extends StatefulWidget {
   const ComentarioScreen({required this.idLibro});
 
   @override
-  State<ComentarioScreen> createState() =>
-      _ComentarioScreen(idLibro: idLibro);
+  State<ComentarioScreen> createState() => _ComentarioScreen(idLibro: idLibro);
 }
 
 class _ComentarioScreen extends State<ComentarioScreen> {
@@ -36,7 +35,7 @@ class _ComentarioScreen extends State<ComentarioScreen> {
                   child: Column(
                 children: [
                   SizedBox(height: 10),
-                  Text('New Report',
+                  Text('Comentario: ',
                       style: Theme.of(context).textTheme.headline4),
                   SizedBox(height: 30),
                   ChangeNotifierProvider(
@@ -53,7 +52,7 @@ class _ComentarioScreen extends State<ComentarioScreen> {
                           Colors.indigo.withOpacity(0.1)),
                       shape: MaterialStateProperty.all(StadiumBorder())),
                   child: Text(
-                    'Back',
+                    'Atrás',
                     style: TextStyle(fontSize: 18, color: Colors.black87),
                   )),
               SizedBox(height: 50),
@@ -98,8 +97,8 @@ class __Form extends State<_Form> {
     final comentarioService = ComentarioService();
     //final departmentProvider = Provider.of<DepartmentFormProvider>(context);
     List<dynamic> options = [
-      [false, "Not Resolved"],
-      [true, "Resolved"]
+      [false, "No Resuelto"],
+      [true, "Resuelto"]
     ];
 
     return Container(
@@ -114,7 +113,7 @@ class __Form extends State<_Form> {
               decoration: InputDecorations.authInputDecoration(
                   hintText: 'comentario',
                   labelText: 'comentario',
-                  prefixIcon: Icons.summarize_rounded),
+                  prefixIcon: Icons.comment_rounded),
               onChanged: (value) => commentForm.comentario = value,
               maxLines: null,
             ),
@@ -128,42 +127,32 @@ class __Form extends State<_Form> {
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                     child: Text(
-                      commentForm.isLoading ? 'Wait' : 'Submit',
+                      commentForm.isLoading ? 'Espera' : 'Enviar',
                       style: TextStyle(color: Colors.white),
                     )),
                 onPressed: commentForm.isLoading
                     ? null
                     : () async {
-                        // if (commentForm.date.isUtc ||
-                        //     commentForm.hour.isEmpty ||
-                        //     commentForm.idDepartment == 0) {
-                        //   customToast("Fiels can't be empty", context);
-                        // } else {
                         FocusScope.of(context).unfocus();
                         final authService =
                             Provider.of<AuthService>(context, listen: false);
-
                         if (!commentForm.isValidForm()) return;
-
                         commentForm.isLoading = true;
                         int idUser = user.id!;
-                        // TODO: validar si el login es correcto
-                        final String? errorMessage = await comentarioService.addComment(
-                            idLibro, commentForm.comentario);
-
-                        if (errorMessage == '201') {
-                          customToast('Created', context);
-                          Navigator.pushReplacementNamed(
-                              context, 'details', arguments:idLibro);
+                        final String? errorMessage = await comentarioService
+                            .addComment(idLibro, commentForm.comentario);
+                            print(errorMessage);
+                        if (errorMessage == '200') {
+                          customToast('Creado', context);
+                          Navigator.pushReplacementNamed(context, 'details',
+                              arguments: idLibro);
                         } else if (errorMessage == '500') {
-                          // TODO: mostrar error en pantalla
-                          customToast('No se ha podido poner un comentario', context);
-
+                          customToast(
+                              'No se ha podido poner un comentario', context);
                           commentForm.isLoading = false;
                         } else {
                           customToast('Server error', context);
                         }
-                        // }
                       })
           ],
         ),

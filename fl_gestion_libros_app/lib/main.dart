@@ -66,6 +66,12 @@ class MyApp extends StatelessWidget {
             builder: (context) => ComentarioScreen(idLibro: id),
           );
         }
+        if (settings.name == 'valoracion') {
+          final int id = settings.arguments as int;
+          return MaterialPageRoute(
+            builder: (context) => ValoracionScreen(idLibro: id),
+          );
+        }
         return null;
       },
         routes: {

@@ -29,14 +29,12 @@ class _DetailsScreen_state extends State<DetailsScreen> {
   User user = User();
 
   Future<Libro> getLibro() async {
-    
     print("EMPIEZA GET ");
     await libroService.getLibros(idLibro);
     return libroService.libro;
   }
 
   Future<void> getListFav() async {
-    
     print("EMPIEZA GET FAVS");
     await favService.getListFavs();
     setState(() {
@@ -71,10 +69,10 @@ class _DetailsScreen_state extends State<DetailsScreen> {
     List<String> listUsers = [];
     for (int i = 0; i < listComments.length; i++) {
       User us = await userService.getUserById(listComments[i].idUsuario!);
-      listUsers.add(us.username!); 
+      listUsers.add(us.username!);
       print(us.username);
     }
-   
+
     setState(() {
       listUsername = listUsers;
     });
@@ -94,7 +92,19 @@ class _DetailsScreen_state extends State<DetailsScreen> {
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Lista de Favoritos'),
+          title: Row(
+            children: [
+              const Text('Lista de Favoritos'),
+              IconButton(
+                icon: const Icon(Icons.add_chart_rounded),
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, 'valoracion',
+                      arguments: idLibro);
+                },
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
           backgroundColor: Colors.deepPurple,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -186,14 +196,15 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                   SliverFillRemaining(
                     child: ListView.separated(
                       itemCount: listComments.length,
-                     itemBuilder: (context, index) => ListTile(
+                      itemBuilder: (context, index) => ListTile(
                           leading: const Icon(
                             Icons.comment_rounded,
                             size: 30,
                           ),
                           contentPadding: const EdgeInsets.all(16),
                           title: Text(
-                            "Autor id " + listComments[index].idUsuario.toString(),
+                            "Autor id: " +
+                                listComments[index].idUsuario.toString(),
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),

@@ -31,7 +31,6 @@ class UserService extends ChangeNotifier {
       },
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    print(decodedResp);
     await storage.write(key: 'id', value: decodedResp['id'].toString());
     isLoading = false;
     notifyListeners();
@@ -72,7 +71,6 @@ class UserService extends ChangeNotifier {
       },
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
-    print(decodedResp);
     await storage.write(key: 'id', value: decodedResp['id'].toString());
     isLoading = false;
     notifyListeners();

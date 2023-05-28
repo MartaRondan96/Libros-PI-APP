@@ -29,13 +29,11 @@ class _DetailsScreen_state extends State<DetailsScreen> {
   User user = User();
 
   Future<Libro> getLibro() async {
-    print("EMPIEZA GET ");
     await libroService.getLibros(idLibro);
     return libroService.libro;
   }
 
   Future<void> getListFav() async {
-    print("EMPIEZA GET FAVS");
     await favService.getListFavs();
     setState(() {
       listFavs = favService.listFavs;
@@ -43,16 +41,13 @@ class _DetailsScreen_state extends State<DetailsScreen> {
   }
 
   Future<void> getListComments() async {
-    print("EMPIEZA GET COMMENTS");
     await commentService.getListComentarios(idLibro);
     setState(() {
       listComments = commentService.comentarios;
     });
-    print(listComments);
   }
 
   void getCheck() {
-    print("EMPIEZA GET CHECK");
     setState(() {
       if (listFavs.contains(idLibro)) {
         iconito = Icon(Icons.heart_broken_rounded, color: Colors.white);
@@ -65,18 +60,15 @@ class _DetailsScreen_state extends State<DetailsScreen> {
   }
 
   Future getUser() async {
-    print("EMPIEZA GET USER");
     List<String> listUsers = [];
     for (int i = 0; i < listComments.length; i++) {
       User us = await userService.getUserById(listComments[i].idUsuario!);
       listUsers.add(us.username!);
-      print(us.username);
     }
 
     setState(() {
       listUsername = listUsers;
     });
-    print(listUsers);
   }
 
   @override
@@ -88,11 +80,11 @@ class _DetailsScreen_state extends State<DetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("EMPIEZA LA SCREEN");
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
         appBar: AppBar(
           title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text('Lista de Favoritos'),
               IconButton(
@@ -103,7 +95,6 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                 },
               ),
             ],
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
           backgroundColor: Colors.deepPurple,
           leading: IconButton(
@@ -233,8 +224,10 @@ class _DetailsScreen_state extends State<DetailsScreen> {
             } else {
               favService.addFav(idLibro);
             }
+            getCheck();
             Navigator.pushReplacementNamed(context, 'details',
                 arguments: idLibro);
+            
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),

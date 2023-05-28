@@ -61,6 +61,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
     });
   }
 
+
   @override
   void initState() {
     super.initState();

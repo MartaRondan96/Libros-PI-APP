@@ -4,16 +4,20 @@ import 'package:http/http.dart' as http;
 import 'package:fl_gestion_libros_app/models/libro.dart';
 import 'package:fl_gestion_libros_app/services/services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart'; 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../models/models.dart'; 
  
  class ComentarioService extends ChangeNotifier {
 
   final String _baseUrl = '192.168.1.40:8080';
   final libroService = LibroService();
+   final userService = UserService();
   bool isLoading = true;
   List<Comentario> comentarios = [];
   String l = "";
   Libro libro = Libro();
+List<String> listUsers = [];
 
   final storage = const FlutterSecureStorage();
 
@@ -63,7 +67,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
             ))
         .toList();
     comentarios = comentariosList;
-
+    for (int i = 0; i < comentarios.length; i++) {
+      User us = await userService.getUserById(comentarios[i].idUsuario!);
+      listUsers.add(us.username!);
+    }
     isLoading = false;
     notifyListeners();
 

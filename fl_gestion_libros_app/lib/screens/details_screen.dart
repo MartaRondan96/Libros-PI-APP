@@ -42,8 +42,10 @@ class _DetailsScreen_state extends State<DetailsScreen> {
 
   Future<void> getListComments() async {
     await commentService.getListComentarios(idLibro);
+
     setState(() {
       listComments = commentService.comentarios;
+      listUsername = commentService.listUsers;
     });
   }
 
@@ -59,23 +61,11 @@ class _DetailsScreen_state extends State<DetailsScreen> {
     });
   }
 
-  Future getUser() async {
-    List<String> listUsers = [];
-    for (int i = 0; i < listComments.length; i++) {
-      User us = await userService.getUserById(listComments[i].idUsuario!);
-      listUsers.add(us.username!);
-    }
-
-    setState(() {
-      listUsername = listUsers;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     getListFav().then((value) => getCheck());
-    getListComments().then((value) => getUser());
+    getListComments();
   }
 
   @override
@@ -164,7 +154,6 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                           ],
                         ),
                       ),
-                      //Resumen del libro
                       Container(
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -194,8 +183,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                           ),
                           contentPadding: const EdgeInsets.all(16),
                           title: Text(
-                            "Autor id: " +
-                                listComments[index].idUsuario.toString(),
+                            "Autor: " + listUsername[index],
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
@@ -227,7 +215,6 @@ class _DetailsScreen_state extends State<DetailsScreen> {
             getCheck();
             Navigator.pushReplacementNamed(context, 'details',
                 arguments: idLibro);
-            
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),

@@ -87,7 +87,7 @@ class _LoginForm extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 disabledColor: Colors.grey,
                 elevation: 0,
-                color: Colors.deepPurple,
+                color: Colors.pink.shade800,
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                     child: Text(
@@ -144,7 +144,7 @@ class _LoginForm extends StatelessWidget {
       fullWidth: true,
       toastHorizontalMargin: 25,
       borderRadius: BorderRadius.circular(15),
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: Colors.pink.shade800,
       alignment: Alignment.topCenter,
       position: StyledToastPosition.bottom,
       duration: const Duration(seconds: 3),

@@ -47,12 +47,9 @@ class _Fav_screenState extends State<Fav_screen> {
         }
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:  Color.fromRGBO(201, 175, 240, 1),
+        backgroundColor:  Color.fromRGBO(72, 71, 75, 1),
         title: Text('Libros favoritos'),
         elevation: 0,
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.search_outlined))
-        ],
       ),
       body: Background(
         child: SingleChildScrollView(
@@ -92,9 +89,9 @@ class _Fav_screenState extends State<Fav_screen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
          BottomNavigationBarItem(
-              icon: Icon(Icons.book), label: 'Libros'),
+              icon: Icon(Icons.book, color: Colors.orange), label: 'Libros'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border), label: 'Favoritos'),
+              icon: Icon(Icons.favorite_border , color: Colors.pink), label: 'Favoritos'),
         ],
         currentIndex: 1, //New
         onTap: _onItemTapped,

@@ -50,12 +50,12 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:  Color.fromRGBO(201, 175, 240, 1),
+        backgroundColor:  Color.fromRGBO(72, 71, 75, 1),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: const Icon(Icons.login_outlined),
+              icon: const Icon(Icons.login_outlined, color: Colors.white,),
               color: Color.fromRGBO(0, 0, 0, 1),
               onPressed: () {
                 Provider.of<AuthService>(context, listen: false).logout();
@@ -64,7 +64,7 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
             ),
             Text('Catálogo de libros'),
             IconButton(
-              icon: const Icon(Icons.account_circle_sharp),
+              icon: const Icon(Icons.account_circle_sharp, color: Colors.white,),
               color: Color.fromRGBO(0, 0, 0, 1),
               onPressed: () {
                 Provider.of<AuthService>(context, listen: false).logout();
@@ -113,11 +113,11 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor:  Color.fromRGBO(192, 152, 252, 1),
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Libros'),
+         BottomNavigationBarItem(
+              icon: Icon(Icons.book, color: Colors.orange), label: 'Libros'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border), label: 'Favoritos'),
+              icon: Icon(Icons.favorite_border , color: Colors.pink), label: 'Favoritos'),
         ],
         currentIndex: 0, //New
         onTap: _onItemTapped,

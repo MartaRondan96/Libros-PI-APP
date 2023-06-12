@@ -53,7 +53,7 @@ class _ComentarioScreen extends State<ComentarioScreen> {
                       shape: MaterialStateProperty.all(StadiumBorder())),
                   child: Text(
                     'Atrás',
-                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   )),
               SizedBox(height: 50),
             ],
@@ -123,7 +123,7 @@ class __Form extends State<_Form> {
                     borderRadius: BorderRadius.circular(10)),
                 disabledColor: Colors.grey,
                 elevation: 0,
-                color: Colors.blueGrey,
+                color: Colors.pink,
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                     child: Text(
@@ -172,7 +172,7 @@ class __Form extends State<_Form> {
       fullWidth: true,
       toastHorizontalMargin: 25,
       borderRadius: BorderRadius.circular(15),
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Colors.pink,
       alignment: Alignment.topCenter,
       position: StyledToastPosition.bottom,
       duration: const Duration(seconds: 3),

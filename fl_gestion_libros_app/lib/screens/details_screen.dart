@@ -74,7 +74,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
         appBar: AppBar(
-          backgroundColor:  Color.fromRGBO(201, 175, 240, 1),
+          backgroundColor:  Color.fromRGBO(72, 71, 75, 1),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -169,7 +169,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                         ),
                         TextButton(
                           style:
-                              TextButton.styleFrom(foregroundColor: Colors.blue),
+                              TextButton.styleFrom(foregroundColor: Colors.pink, backgroundColor: Colors.white60),
                           onPressed: () => Navigator.pushReplacementNamed(
                               context, 'comment',
                               arguments: idLibro),
@@ -224,7 +224,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          fillColor: Colors.blue,
+          fillColor: Colors.pink,
           child: iconito,
           constraints: BoxConstraints.tightFor(
             width: 40.0,

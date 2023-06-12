@@ -50,7 +50,9 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor:  Color.fromRGBO(201, 175, 240, 1),
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
               icon: const Icon(Icons.login_outlined),
@@ -61,6 +63,14 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
               },
             ),
             Text('Catálogo de libros'),
+            IconButton(
+              icon: const Icon(Icons.account_circle_sharp),
+              color: Color.fromRGBO(0, 0, 0, 1),
+              onPressed: () {
+                Provider.of<AuthService>(context, listen: false).logout();
+                Navigator.pushReplacementNamed(context, 'update_user_screen');
+              },
+            ),
           ],
         ),
         elevation: 0,
@@ -83,7 +93,8 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
                   itemBuilder: (context, index) {
                     String image = 'assets/' + libros[index].imagen!;
                     return GestureDetector(
-                      onTap: () => Navigator.pushReplacementNamed(context, 'details',
+                      onTap: () => Navigator.pushReplacementNamed(
+                          context, 'details',
                           arguments: libros[index].id),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
@@ -102,6 +113,7 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor:  Color.fromRGBO(192, 152, 252, 1),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Libros'),
           BottomNavigationBarItem(

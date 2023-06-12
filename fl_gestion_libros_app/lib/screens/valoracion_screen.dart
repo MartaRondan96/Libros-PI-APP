@@ -27,7 +27,7 @@ class _ValoracionScreen extends State<ValoracionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: AuthBackground(
+        body: Background(
             child: SingleChildScrollView(
           child: Column(
             children: [

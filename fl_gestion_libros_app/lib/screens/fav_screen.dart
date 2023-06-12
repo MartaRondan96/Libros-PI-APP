@@ -47,6 +47,7 @@ class _Fav_screenState extends State<Fav_screen> {
         }
     return Scaffold(
       appBar: AppBar(
+        backgroundColor:  Color.fromRGBO(201, 175, 240, 1),
         title: Text('Libros favoritos'),
         elevation: 0,
         actions: [

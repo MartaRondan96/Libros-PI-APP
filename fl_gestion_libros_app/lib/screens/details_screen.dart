@@ -74,6 +74,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
         appBar: AppBar(
+          backgroundColor:  Color.fromRGBO(201, 175, 240, 1),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -87,7 +88,6 @@ class _DetailsScreen_state extends State<DetailsScreen> {
               ),
             ],
           ),
-          backgroundColor: Colors.deepPurple,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -95,116 +95,120 @@ class _DetailsScreen_state extends State<DetailsScreen> {
             },
           ),
         ),
-        body: FutureBuilder<Libro>(
-          future: getLibro(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              // Muestra un indicador de carga mientras se obtienen los datos
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              // Maneja cualquier error que pueda ocurrir durante la obtención de datos
-              return Center(child: Text('Error al obtener los datos'));
-            } else if (snapshot.hasData) {
-              // Los datos se han obtenido correctamente
-              final Libro libro = snapshot.data!;
-
-              return CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Column(children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 20),
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: FadeInImage(
-                                placeholder: AssetImage('assets/no-image.jpg'),
-                                image: AssetImage('assets/${libro.imagen!}'),
-                                height: 200,
+        body: Background(
+          child: FutureBuilder<Libro>(
+            future: getLibro(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // Muestra un indicador de carga mientras se obtienen los datos
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                // Maneja cualquier error que pueda ocurrir durante la obtención de datos
+                return Center(child: Text('Error al obtener los datos'));
+              } else if (snapshot.hasData) {
+                // Los datos se han obtenido correctamente
+                final Libro libro = snapshot.data!;
+        
+                return CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 20),
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: FadeInImage(
+                                  placeholder: AssetImage('assets/no-image.jpg'),
+                                  image: AssetImage('assets/${libro.imagen!}'),
+                                  height: 200,
+                                ),
                               ),
+                              SizedBox(width: 20),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    libro.titulo!,
+                                    style: textTheme.headline5,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  ),
+                                  Text(
+                                    libro.autor!,
+                                    style: textTheme.subtitle1,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.star_outline,
+                                          size: 15, color: Colors.grey),
+                                      SizedBox(width: 5),
+                                      Text(libro.nota!.toStringAsFixed(2),
+                                          style: textTheme.caption),
+                                      Text(libro.pag!.toStringAsFixed(2),
+                                        style: textTheme.caption)
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                          child: Text(
+                            libro.resumen!,
+                            textAlign: TextAlign.justify,
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                        ),
+                        TextButton(
+                          style:
+                              TextButton.styleFrom(foregroundColor: Colors.blue),
+                          onPressed: () => Navigator.pushReplacementNamed(
+                              context, 'comment',
+                              arguments: idLibro),
+                          child: Text('Añadir comentario'),
+                        ),
+                      ]),
+                    ),
+                    SliverFillRemaining(
+                      child: ListView.separated(
+                        itemCount: listComments.length,
+                        itemBuilder: (context, index) => ListTile(
+                            leading: const Icon(
+                              Icons.comment_rounded,
+                              size: 30,
                             ),
-                            SizedBox(width: 20),
-                            Column(
+                            contentPadding: const EdgeInsets.all(16),
+                            title: Text(
+                              "Autor: " + listUsername[index],
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  libro.titulo!,
-                                  style: textTheme.headline5,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                ),
-                                Text(
-                                  libro.autor!,
-                                  style: textTheme.subtitle1,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(Icons.star_outline,
-                                        size: 15, color: Colors.grey),
-                                    SizedBox(width: 5),
-                                    Text(libro.nota!.toStringAsFixed(2),
-                                        style: textTheme.caption)
-                                  ],
-                                ),
+                                SizedBox(height: 2),
+                                Text(listComments[index].comentario!),
                               ],
-                            )
-                          ],
-                        ),
+                            )),
+                        separatorBuilder: (_, __) => const Divider(),
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                        child: Text(
-                          libro.resumen!,
-                          textAlign: TextAlign.justify,
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                      ),
-                      TextButton(
-                        style:
-                            TextButton.styleFrom(foregroundColor: Colors.blue),
-                        onPressed: () => Navigator.pushReplacementNamed(
-                            context, 'comment',
-                            arguments: idLibro),
-                        child: Text('Añadir comentario'),
-                      ),
-                    ]),
-                  ),
-                  SliverFillRemaining(
-                    child: ListView.separated(
-                      itemCount: listComments.length,
-                      itemBuilder: (context, index) => ListTile(
-                          leading: const Icon(
-                            Icons.comment_rounded,
-                            size: 30,
-                          ),
-                          contentPadding: const EdgeInsets.all(16),
-                          title: Text(
-                            "Autor: " + listUsername[index],
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 2),
-                              Text(listComments[index].comentario!),
-                            ],
-                          )),
-                      separatorBuilder: (_, __) => const Divider(),
-                    ),
-                  )
-                ],
-              );
-            } else {
-              // No hay datos disponibles
-              return Center(child: Text('No hay datos disponibles'));
-            }
-          },
+                    )
+                  ],
+                );
+              } else {
+                // No hay datos disponibles
+                return Center(child: Text('No hay datos disponibles'));
+              }
+            },
+          ),
         ),
         floatingActionButton: RawMaterialButton(
           onPressed: () {

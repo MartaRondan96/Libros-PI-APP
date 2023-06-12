@@ -80,6 +80,7 @@ class MyApp extends StatelessWidget {
           'register': (_) => RegisterScreen(),
           'catalogo_screen': (_) => Catalogo_screen(),
           'fav_screen': (_) => Fav_screen(),
+          'update_user_screen': (_) => UpdateUserScreen(),
         },
         scaffoldMessengerKey: NotificationsService.messengerKey,
         theme: ThemeData.light().copyWith(

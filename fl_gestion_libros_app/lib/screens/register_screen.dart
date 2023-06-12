@@ -23,7 +23,10 @@ class RegisterScreen extends StatelessWidget {
             children: [
               SizedBox(height: 10),
               Text('Crear una cuenta',
-                  style: Theme.of(context).textTheme.headlineMedium),
+                 style: Theme.of(context).textTheme.headline4,
+                  
+                  
+                  ),
               SizedBox(height: 30),
               ChangeNotifierProvider(
                   create: (_) => RegisterFormProvider(), child: _RegisterForm())
@@ -38,7 +41,7 @@ class RegisterScreen extends StatelessWidget {
                   shape: MaterialStateProperty.all(StadiumBorder())),
               child: Text(
                 'Iniciar sesión',
-                style: TextStyle(fontSize: 18, color: Colors.black87),
+               style: TextStyle(color: Colors.white),
               )),
           SizedBox(height: 50),
         ],
@@ -98,7 +101,7 @@ class _RegisterForm extends StatelessWidget {
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                     child: Text(
-                      registerForm.isLoading ? 'Wait' : 'Submit',
+                      registerForm.isLoading ? 'Espere' : 'Enviar',
                       style: TextStyle(color: Colors.white),
                     )),
                 onPressed: registerForm.isLoading

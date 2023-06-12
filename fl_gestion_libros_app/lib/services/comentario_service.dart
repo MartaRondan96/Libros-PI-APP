@@ -10,7 +10,7 @@ import '../models/models.dart';
  
  class ComentarioService extends ChangeNotifier {
 
-  final String _baseUrl = '192.168.1.40:8080';
+  final String _baseUrl = '192.168.1.45:8080';
   final libroService = LibroService();
    final userService = UserService();
   bool isLoading = true;

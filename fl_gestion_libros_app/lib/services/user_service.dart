@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:fl_gestion_libros_app/Models/models.dart';
 
 class UserService extends ChangeNotifier {
-  final String _baseUrl = '192.168.1.40:8080';
+  final String _baseUrl = '192.168.1.45:8080';
   bool isLoading = true;
   String usuario = "";
   User u = User();
@@ -35,12 +35,12 @@ class UserService extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
     int idUser = decodedResp['id'];
-  String usernameUser = decodedResp['username'].toString();
-  String passwordUser = decodedResp['password'].toString();
-  String emailUser= decodedResp['email'].toString();
-  bool enabledUser = decodedResp['enabled'];
-  String roleUser = decodedResp['surname'].toString();
-  String tokenUser = decodedResp['surname'].toString();
+    String usernameUser = decodedResp['username'].toString();
+    String passwordUser = decodedResp['password'].toString();
+    String emailUser = decodedResp['email'].toString();
+    bool enabledUser = decodedResp['enabled'];
+    String roleUser = decodedResp['surname'].toString();
+    String tokenUser = decodedResp['surname'].toString();
     //Crear user
 
     User us = User(
@@ -55,7 +55,7 @@ class UserService extends ChangeNotifier {
     return us;
   }
 
-   getUser() async {
+  getUser() async {
     String? token = await AuthService().readToken();
     String? id = await AuthService().readId();
 
@@ -71,26 +71,22 @@ class UserService extends ChangeNotifier {
       },
     );
     final Map<String, dynamic> decodedResp = json.decode(resp.body);
+
     await storage.write(key: 'id', value: decodedResp['id'].toString());
     isLoading = false;
     notifyListeners();
-    int idUser = decodedResp['id'];
-  String usernameUser = decodedResp['username'].toString();
-  String passwordUser = decodedResp['password'].toString();
-  String emailUser= decodedResp['email'].toString();
-  bool enabledUser = decodedResp['enabled'];
-  String roleUser = decodedResp['surname'].toString();
-    String tokenUser = decodedResp['surname'].toString();
     //Crear user
+    String idUser = decodedResp['id'].toString();
+    String usernameUser = decodedResp['username'].toString();
+    String passwordUser = decodedResp['password'].toString();
+    String emailUser = decodedResp['emailUser'].toString();
 
     User us = User(
-        id: idUser,
+        id: int.parse(idUser),
         username: usernameUser,
         password: passwordUser,
-        email: emailUser,
-        enabled: enabledUser,
-        role: roleUser,
-        token: tokenUser);
+        email: emailUser
+        );
 
     return us;
   }
@@ -152,6 +148,37 @@ class UserService extends ChangeNotifier {
         "Authorization": "Bearer $token"
       },
     );
+  }
+
+//UPDATE USER
+  Future<String?> update(String username, String pass) async {
+    String id = await AuthService().readId();
+    final Map<String, dynamic> authData = {
+      'id': id,
+      'username': username,
+      'password': pass
+    };
+
+    final encodedFormData = utf8.encode(json.encode(authData));
+    final url = Uri.http(_baseUrl, '/all/update');
+
+    final resp = await http.patch(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: encodedFormData);
+
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
+
+    if (resp.statusCode == 200) {
+      await storage.write(key: 'token', value: decodedResp['token']);
+      await storage.write(key: 'id', value: decodedResp['id'].toString());
+
+      return (resp.statusCode.toString());
+    } else {
+      return (resp.statusCode.toString());
+    }
   }
 
   Future postDelete(String id) async {

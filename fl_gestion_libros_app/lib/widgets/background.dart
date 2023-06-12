@@ -58,8 +58,8 @@ class _PurpleBox extends StatelessWidget {
 
   BoxDecoration _purpleBackground() => const BoxDecoration(
           gradient: LinearGradient(colors: [
-        Color.fromRGBO(171, 96, 245, 1),
-        Color.fromRGBO(175, 234, 240, 1)
+            Color.fromRGBO(201, 175, 240, 1),
+            Color.fromRGBO(219, 204, 241, 1),
       ]));
 }
 

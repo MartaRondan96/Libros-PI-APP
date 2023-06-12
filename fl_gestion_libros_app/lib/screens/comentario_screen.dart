@@ -26,7 +26,7 @@ class _ComentarioScreen extends State<ComentarioScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: AuthBackground(
+        body: Background(
             child: SingleChildScrollView(
           child: Column(
             children: [

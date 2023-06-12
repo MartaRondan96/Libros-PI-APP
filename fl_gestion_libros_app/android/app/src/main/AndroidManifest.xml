@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.fl_gestion_libros_app">
    <application
-        android:label="fl_gestion_libros_app"
+        android:label="Gestion de libros"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

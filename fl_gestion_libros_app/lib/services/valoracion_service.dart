@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
  
  class ValoracionService extends ChangeNotifier {
 
-  final String _baseUrl = '192.168.1.45:8080';
+  final String _baseUrl = '192.168.1.41:8080';
   bool isLoading = true;
 
   final storage = const FlutterSecureStorage();

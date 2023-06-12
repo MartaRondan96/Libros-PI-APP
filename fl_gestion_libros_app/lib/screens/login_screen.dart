@@ -114,6 +114,7 @@ class _LoginForm extends StatelessWidget {
                         if (spliter?[1] == '200') {
                           if (spliter?[2] == 'false') {
                             customToast('Usuario no activo', context);
+                            loginForm.isLoading=false;
                           } else {
                               Navigator.pushReplacementNamed(
                                   context, 'catalogo_screen');

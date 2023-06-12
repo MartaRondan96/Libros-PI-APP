@@ -28,8 +28,8 @@ class _HeaderIcon extends StatelessWidget {
     return SafeArea(
       child: Container(
         width: double.infinity,
-        margin: const EdgeInsets.only(top: 30),
-        child: const Icon(Icons.person_pin, color: Colors.white, size: 100),
+        margin: const EdgeInsets.only(top: 50),
+        child: const Icon(Icons.menu_book_outlined, color: Colors.white, size: 100),
       ),
     );
   }
@@ -58,8 +58,8 @@ class _PurpleBox extends StatelessWidget {
 
   BoxDecoration _purpleBackground() => const BoxDecoration(
           gradient: LinearGradient(colors: [
-        Color.fromRGBO(63, 63, 156, 1),
-        Color.fromRGBO(90, 70, 178, 1)
+        Color.fromRGBO(102, 102, 105, 1),
+        Color.fromRGBO(72, 71, 75, 1)
       ]));
 }
 

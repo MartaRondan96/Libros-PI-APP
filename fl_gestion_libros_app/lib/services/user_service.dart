@@ -15,7 +15,7 @@ class UserService extends ChangeNotifier {
 
   getUserById(int id) async {
     String? token = await AuthService().readToken();
-print("DATA");
+    print("DATA");
     print("TOKEN "+ token!);
     final url = Uri.http(_baseUrl, '/all/$id');
     isLoading = true;

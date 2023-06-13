@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_gestion_libros_app/models/models.dart';
-import 'package:fl_gestion_libros_app/screens/screens.dart';
 import '../providers/providers.dart';
 import '../services/services.dart';
 import '../ui/input_decorations.dart';
 import '../widgets/widgets.dart';
 
 class UpdateUserScreen extends StatefulWidget {
-  const UpdateUserScreen({Key? key}) : super(key: key);
+  const UpdateUserScreen();
 
   @override
   State<UpdateUserScreen> createState() => _UpdateUserScreen();
@@ -63,12 +62,13 @@ class _LoginForm extends StatefulWidget {
 }
 
 class __LoginForm extends State<_LoginForm> {
+  __LoginForm();
   final userService =UserService();
-  String? token="";
   User user = User();
 
   Future getUser() async {
-    User us = await UserService().getUser();
+    await userService.getUser();
+    User us = await userService.getUser();
     setState(() {
       user = us;
     });
@@ -83,7 +83,7 @@ class __LoginForm extends State<_LoginForm> {
   @override
   Widget build(BuildContext context) {
     final loginForm = Provider.of<UpdateFormProvider>(context);
-
+    final userService = UserService();
     return Container(
       child: Form(
         key: loginForm.formKey,
@@ -173,7 +173,7 @@ class __LoginForm extends State<_LoginForm> {
                               loginForm.password);
 
                           if (errorMessage == '201') {
-                            customToast('Updated', context);
+                            customToast('Actualizado', context);
                             Navigator.pushReplacementNamed(
                                 context, 'userscreen');
                           } else if (errorMessage == '500') {

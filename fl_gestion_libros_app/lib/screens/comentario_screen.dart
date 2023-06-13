@@ -1,11 +1,9 @@
 import 'package:fl_gestion_libros_app/models/models.dart';
 import 'package:fl_gestion_libros_app/services/services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:provider/provider.dart';
 import '../providers/providers.dart';
-import '../services/services.dart';
 import '../ui/input_decorations.dart';
 import '../widgets/widgets.dart';
 
@@ -95,12 +93,6 @@ class __Form extends State<_Form> {
   Widget build(BuildContext context) {
     final commentForm = Provider.of<ComentarioFormProvider>(context);
     final comentarioService = ComentarioService();
-    //final departmentProvider = Provider.of<DepartmentFormProvider>(context);
-    List<dynamic> options = [
-      [false, "No Resuelto"],
-      [true, "Resuelto"]
-    ];
-
     return Container(
       child: Form(
         key: commentForm.formKey,

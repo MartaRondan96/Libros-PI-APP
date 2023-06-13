@@ -71,6 +71,7 @@ class __LoginForm extends State<_LoginForm> {
     User us = await userService.getUser();
     setState(() {
       user = us;
+      print(user.username);
     });
   }
 
@@ -110,9 +111,8 @@ class __LoginForm extends State<_LoginForm> {
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
                   hintText: '*****',
-                  labelText: 'email',
+                  labelText: user.email.toString(),
                   prefixIcon: Icons.email_rounded),
-              onChanged: (value) => loginForm.password = value,
             ),
             SizedBox(height: 30),
             TextFormField(
@@ -156,9 +156,11 @@ class __LoginForm extends State<_LoginForm> {
                     : () async {
                         if (
                             loginForm.username.isEmpty ||
-                            loginForm.password.isEmpty || (loginForm.password == loginForm.r_password )
+                            loginForm.password.isEmpty || (loginForm.password != loginForm.r_password )
                             ) {
-                          customToast("Los campos tienen que estar rellenos", context);
+                              customToast("Los campos tienen que estar rellenos", context);
+                            if(loginForm.password != loginForm.r_password )
+                             customToast("Las contraseñas deben coincidir", context);
                         } else {
                           FocusScope.of(context).unfocus();
                           final authService =
@@ -170,15 +172,15 @@ class __LoginForm extends State<_LoginForm> {
 
                           final String? errorMessage = await userService.update(
                               loginForm.username,
-                              loginForm.password);
+                              loginForm.password, user.email! );
 
                           if (errorMessage == '201') {
                             customToast('Actualizado', context);
                             Navigator.pushReplacementNamed(
-                                context, 'userscreen');
+                                context, 'catalogo_screen');
                           } else if (errorMessage == '500') {
                             // TODO: mostrar error en pantalla
-                            customToast('User registered', context);
+                            customToast('No se ha podido actualizar', context);
 
                             loginForm.isLoading = false;
                           } else {

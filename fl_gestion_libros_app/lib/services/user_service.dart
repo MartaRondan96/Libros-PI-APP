@@ -15,8 +15,6 @@ class UserService extends ChangeNotifier {
 
   getUserById(int id) async {
     String? token = await AuthService().readToken();
-    print("DATA");
-    print("TOKEN "+ token!);
     final url = Uri.http(_baseUrl, '/all/$id');
     isLoading = true;
     notifyListeners();
@@ -77,28 +75,29 @@ class UserService extends ChangeNotifier {
     String idUser = decodedResp['id'].toString();
     String usernameUser = decodedResp['username'].toString();
     String passwordUser = decodedResp['password'].toString();
-    String enabledUser = decodedResp['surname'].toString();
-    String roleUser = decodedResp['surname'].toString();
-    String tokenUser = decodedResp['surname'].toString();
-
+    // String enabledUser = decodedResp['enabled'].toString();
+    // String roleUser = decodedResp['role'].toString();
+    // String tokenUser = decodedResp['token'].toString();
+    String emailUser = decodedResp['email'].toString();
     User us = User(
         id: int.parse(idUser),
         username: usernameUser,
         password: passwordUser,
-    
-        enabled: bool.hasEnvironment(enabledUser),
-        role: roleUser,
-        token: tokenUser);
-
+        email: emailUser,
+        // enabled: true,
+        // role: roleUser,
+        // token: tokenUser
+        );
     return us;
   }
 //UPDATE USER
-  Future<String?> update(String username, String pass) async {
+  Future<String?> update(String username, String pass, String email) async {
     String id = await AuthService().readId();
     final Map<String, dynamic> authData = {
       'id': id,
       'username': username,
-      'password': pass
+      'password': pass, 
+      'email' : email
     };
 
     final encodedFormData = utf8.encode(json.encode(authData));

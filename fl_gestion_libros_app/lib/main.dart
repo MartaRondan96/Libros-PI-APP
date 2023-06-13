@@ -92,27 +92,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'fl_gestion_libros_app',
-//       initialRoute: 'login',
-//       routes: {
-//         'checking': (_) => CheckAuthScreen(),
-//         'home': (_) => HomeScreen(),
-//         'login': (_) => LoginScreen(),
-//         'register': (_) => RegisterScreen(),
-//         'admin': (_) => AdminScreen(),
-//       },
-//       scaffoldMessengerKey: NotificationsService.messengerKey,
-//       theme: ThemeData.light().copyWith(
-//           scaffoldBackgroundColor: Colors.grey[300],
-//           appBarTheme: AppBarTheme(elevation: 0, color: Colors.indigo),
-//           floatingActionButtonTheme: FloatingActionButtonThemeData(
-//               backgroundColor: Colors.indigo, elevation: 0)),
-//     );
-//   }
-// }

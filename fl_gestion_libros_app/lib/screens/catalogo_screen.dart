@@ -67,7 +67,6 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
               icon: const Icon(Icons.account_circle_sharp, color: Colors.white,),
               color: Color.fromRGBO(0, 0, 0, 1),
               onPressed: () {
-                Provider.of<AuthService>(context, listen: false).logout();
                 Navigator.pushReplacementNamed(context, 'update_user_screen');
               },
             ),

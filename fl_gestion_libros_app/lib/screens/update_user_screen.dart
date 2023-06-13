@@ -24,11 +24,11 @@ class _UpdateUserScreen extends State<UpdateUserScreen> {
             child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 250),
+              SizedBox(height: 120),
               CardContainer(
                   child: Column(
                 children: [
-                  SizedBox(height: 10),
+                 SizedBox(height: 10),
                   Text('Editar datos de usuario',
                       style: Theme.of(context).textTheme.headline4),
                   SizedBox(height: 30),
@@ -45,8 +45,8 @@ class _UpdateUserScreen extends State<UpdateUserScreen> {
                           Colors.indigo.withOpacity(0.1)),
                       shape: MaterialStateProperty.all(StadiumBorder())),
                   child: Text(
-                    'Back',
-                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                    'Atrás',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   )),
               SizedBox(height: 50),
             ],
@@ -63,12 +63,12 @@ class _LoginForm extends StatefulWidget {
 }
 
 class __LoginForm extends State<_LoginForm> {
-  final userService = UserService();
+  final userService =UserService();
+  String? token="";
   User user = User();
 
   Future getUser() async {
-    await userService.getUser();
-    User us = await userService.getUser();
+    User us = await UserService().getUser();
     setState(() {
       user = us;
     });
@@ -111,7 +111,7 @@ class __LoginForm extends State<_LoginForm> {
               decoration: InputDecorations.authInputDecoration(
                   hintText: '*****',
                   labelText: 'email',
-                  prefixIcon: Icons.lock_outline),
+                  prefixIcon: Icons.email_rounded),
               onChanged: (value) => loginForm.password = value,
             ),
             SizedBox(height: 30),
@@ -144,7 +144,7 @@ class __LoginForm extends State<_LoginForm> {
                     borderRadius: BorderRadius.circular(10)),
                 disabledColor: Colors.grey,
                 elevation: 0,
-                color: Colors.blueGrey,
+                color: Colors.pink,
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                     child: Text(
@@ -205,7 +205,7 @@ class __LoginForm extends State<_LoginForm> {
       fullWidth: true,
       toastHorizontalMargin: 25,
       borderRadius: BorderRadius.circular(15),
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Colors.pink,
       alignment: Alignment.topCenter,
       position: StyledToastPosition.bottom,
       duration: const Duration(seconds: 3),

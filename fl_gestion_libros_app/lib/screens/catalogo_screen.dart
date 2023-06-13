@@ -78,40 +78,39 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
           // IconButton(onPressed: () {}, icon: Icon(Icons.search_outlined))
         ],
       ),
-      body: Background(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                height: size.height * 0.5,
-                child: Swiper(
-                  itemCount: libros.length,
-                  layout: SwiperLayout.STACK,
-                  itemWidth: size.width * 0.6,
-                  itemHeight: size.height * 0.4,
-                  itemBuilder: (context, index) {
-                    String image = 'assets/' + libros[index].imagen!;
-                    return GestureDetector(
-                      onTap: () => Navigator.pushReplacementNamed(
-                          context, 'details',
-                          arguments: libros[index].id),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: FadeInImage(
-                          placeholder: const AssetImage('assets/no-image.jpg'),
-                          image: AssetImage(image),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
-                  },
+       body: Background(
+      child: GridView.builder(
+        padding: EdgeInsets.all(16),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: size.width / (size.height * 0.8),
+        ),
+        itemCount: libros.length,
+        itemBuilder: (context, index) {
+          String image = 'assets/' + libros[index].imagen!;
+          return GestureDetector(
+            onTap: () => Navigator.pushReplacementNamed(
+                context, 'details',
+                arguments: libros[index].id),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: FadeInImage(
+                  placeholder: const AssetImage('assets/no-image.jpg'),
+                  image: AssetImage(image),
+                  fit: BoxFit.cover,
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
+    ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
          BottomNavigationBarItem(

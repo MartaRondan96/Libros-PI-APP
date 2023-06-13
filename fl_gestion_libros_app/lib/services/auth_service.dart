@@ -7,7 +7,6 @@ class AuthService extends ChangeNotifier {
   final String _baseUrl = '192.168.1.41:8080';
   final storage = const FlutterSecureStorage();
   bool isLoading = true;
-  List<dynamic> Favs = [];
   String passwordGlobal = '';
   String usernameGlobal = '';
 

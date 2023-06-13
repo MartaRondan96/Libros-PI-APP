@@ -47,7 +47,7 @@ class _ValoracionScreen extends State<ValoracionScreen> {
               SizedBox(height: 50),
               TextButton(
                   onPressed: () =>
-                      Navigator.pushReplacementNamed(context, 'details'),
+                      Navigator.pushReplacementNamed(context, 'details', arguments: idLibro),
                   style: ButtonStyle(
                       overlayColor: MaterialStateProperty.all(
                           Colors.indigo.withOpacity(0.1)),

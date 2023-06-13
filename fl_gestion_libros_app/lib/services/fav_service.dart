@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:fl_gestion_libros_app/models/libro.dart';
+import 'package:fl_gestion_libros_app/models/models.dart';
 import 'package:fl_gestion_libros_app/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'; 
@@ -26,7 +26,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
     notifyListeners();
     final url = Uri.http(_baseUrl, '/api/libros/getFavs');
     String? token = await AuthService().readToken();
-
     final resp = await http.get(
       url,
       headers: {"Authorization": "Bearer $token"},
@@ -78,5 +77,46 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
       url,
       headers: {"Authorization": "Bearer $token"},
     );
+  }
+
+    getUser() async {
+    isLoading = true;
+    notifyListeners();
+    String? id = await AuthService().readId();
+    final url = Uri.http(_baseUrl, '/all/$id');
+    String? token = await AuthService().readToken();
+    
+   print("TOKEN"+ token!);
+    final resp = await http.get(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        "Authorization": "Bearer $token"
+      },
+    );
+    final Map<String, dynamic> decodedResp = json.decode(resp.body);
+
+    await storage.write(key: 'id', value: decodedResp['id'].toString());
+    isLoading = false;
+    notifyListeners();
+    //Crear user
+    String idUser = decodedResp['id'].toString();
+    String usernameUser = decodedResp['username'].toString();
+    String passwordUser = decodedResp['password'].toString();
+    String enabledUser = decodedResp['surname'].toString();
+    String roleUser = decodedResp['surname'].toString();
+    String tokenUser = decodedResp['surname'].toString();
+
+    User us = User(
+        id: int.parse(idUser),
+        username: usernameUser,
+        password: passwordUser,
+    
+        enabled: bool.hasEnvironment(enabledUser),
+        role: roleUser,
+        token: tokenUser);
+
+    return us;
   }
   }

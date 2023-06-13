@@ -149,7 +149,8 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                                       SizedBox(width: 5),
                                       Text(libro.nota!.toStringAsFixed(2),
                                           style: textTheme.caption),
-                                      Text(libro.pag!.toStringAsFixed(2),
+                                      SizedBox(width: 20),
+                                      Text("Páginas: "+libro.pag!.toStringAsFixed(0),
                                         style: textTheme.caption)
                                     ],
                                   ),

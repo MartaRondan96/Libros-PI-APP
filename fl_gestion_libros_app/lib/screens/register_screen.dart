@@ -12,41 +12,42 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         body: AuthBackground(
             child: SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(height: 250),
-          CardContainer(
-              child: Column(
+          child: Column(
             children: [
-              SizedBox(height: 10),
-              Text('Crear una cuenta',
-                 style: Theme.of(context).textTheme.headline4,
-                  
-                  
+              SizedBox(height: 250),
+              CardContainer(
+                  child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  Text(
+                    'Crear una cuenta',
+                    style: Theme.of(context).textTheme.headline4,
                   ),
-              SizedBox(height: 30),
-              ChangeNotifierProvider(
-                  create: (_) => RegisterFormProvider(), child: _RegisterForm())
-            ],
-          )),
-          SizedBox(height: 50),
-          TextButton(
-              onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
-              style: ButtonStyle(
-                  overlayColor:
-                      MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
-                  shape: MaterialStateProperty.all(StadiumBorder())),
-              child: Text(
-                'Iniciar sesión',
-               style: TextStyle(color: Colors.white),
+                  SizedBox(height: 30),
+                  ChangeNotifierProvider(
+                      create: (_) => RegisterFormProvider(),
+                      child: _RegisterForm())
+                ],
               )),
-          SizedBox(height: 50),
-        ],
-      ),
-    )));
+              SizedBox(height: 50),
+              TextButton(
+                  onPressed: () =>
+                      Navigator.pushReplacementNamed(context, 'login'),
+                  style: ButtonStyle(
+                      overlayColor: MaterialStateProperty.all(
+                          Colors.indigo.withOpacity(0.1)),
+                      shape: MaterialStateProperty.all(StadiumBorder())),
+                  child: Text(
+                    'Iniciar sesión',
+                    style: TextStyle(color: Colors.white),
+                  )),
+              SizedBox(height: 50),
+            ],
+          ),
+        )));
   }
 }
 
@@ -79,7 +80,18 @@ class _RegisterForm extends StatelessWidget {
                   hintText: 'Password',
                   labelText: 'Password',
                   prefixIcon: Icons.account_circle_sharp),
-              onChanged: (value) => registerForm.email = value,
+              onChanged: (value) => registerForm.password = value,
+            ),
+            SizedBox(height: 30),
+            TextFormField(
+              autocorrect: false,
+              obscureText: true,
+              keyboardType: TextInputType.text,
+              decoration: InputDecorations.authInputDecoration(
+                  hintText: 'Repite Password',
+                  labelText: 'Respite Password',
+                  prefixIcon: Icons.account_circle_sharp),
+              onChanged: (value) => registerForm.r_password = value,
             ),
             SizedBox(height: 30),
             TextFormField(
@@ -89,7 +101,15 @@ class _RegisterForm extends StatelessWidget {
                   hintText: 'Email',
                   labelText: 'Email',
                   prefixIcon: Icons.email),
-              onChanged: (value) => registerForm.password = value,
+              onChanged: (value) => registerForm.email = value,  
+               validator: (value) {
+                  String pattern =
+                      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                  RegExp regExp = new RegExp(pattern);
+                  return regExp.hasMatch(value ?? '')
+                      ? null
+                      : 'Use a valid email';
+                }
             ),
             SizedBox(height: 30),
             MaterialButton(
@@ -106,33 +126,39 @@ class _RegisterForm extends StatelessWidget {
                     )),
                 onPressed: registerForm.isLoading
                     ? null
-                    : () async {
+                    : () async { 
+                      if (registerForm.username.isEmpty ||
+                            registerForm.password.isEmpty ||
+                            registerForm.email.isEmpty || registerForm.r_password.isEmpty ){
+                              customToast("Los campos tienen que estar rellenos", context);
+                            }
+                          else{ 
+                            if(registerForm.password.length<8 && registerForm.r_password.length<8){
+                              customToast("La contraseña tiene que tener 8 caracteres", context);
+                             }else{
+                                if(registerForm.password != registerForm.r_password )
+                                customToast("Las contraseñas deben coincidir", context);
+                          else{
                         FocusScope.of(context).unfocus();
                         final authService =
                             Provider.of<AuthService>(context, listen: false);
-
-                        if (!registerForm.isValidForm()) return;
-
-                        registerForm.isLoading = true;
-
-                        // TODO: validar si el register es correcto
-                        final String? errorMessage = await authService.register(
-                            registerForm.username,
-                            registerForm.password,
-                            registerForm.email);
-
+                          if (!registerForm.isValidForm()) return;
+                          registerForm.isLoading = true;
+                          final String? errorMessage =
+                              await authService.register(registerForm.username,
+                                  registerForm.email,registerForm.password);
                         if (errorMessage == '200') {
                           customToast('Registrado con éxito', context);
                           Navigator.pushReplacementNamed(context, 'login');
                         } else if (errorMessage == '500') {
                           // TODO: mostrar error en pantalla
-                          customToast('Ya existe una cuenta con esos datos', context);
-
+                          customToast(
+                              'Ya existe una cuenta con esos datos', context);
                           registerForm.isLoading = false;
                         } else {
                           customToast('Error de servidor', context);
                         }
-                      })
+   } }}})
           ],
         ),
       ),

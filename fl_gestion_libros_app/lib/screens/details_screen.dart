@@ -61,7 +61,6 @@ class _DetailsScreen_state extends State<DetailsScreen> {
     });
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -74,7 +73,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
         appBar: AppBar(
-          backgroundColor:  Color.fromRGBO(72, 71, 75, 1),
+          backgroundColor: Color.fromRGBO(72, 71, 75, 1),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -108,7 +107,7 @@ class _DetailsScreen_state extends State<DetailsScreen> {
               } else if (snapshot.hasData) {
                 // Los datos se han obtenido correctamente
                 final Libro libro = snapshot.data!;
-        
+
                 return CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
@@ -121,7 +120,8 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: FadeInImage(
-                                  placeholder: AssetImage('assets/no-image.jpg'),
+                                  placeholder:
+                                      AssetImage('assets/no-image.jpg'),
                                   image: AssetImage('assets/${libro.imagen!}'),
                                   height: 200,
                                 ),
@@ -130,28 +130,36 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    libro.titulo!,
-                                    style: textTheme.headline5,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
+                                  Container(
+                                    width: 180,
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: Text(
+                                      libro.titulo!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                    ),
                                   ),
+                                  SizedBox(width: 10),
                                   Text(
                                     libro.autor!,
-                                    style: textTheme.subtitle1,
+                                    style: textTheme.titleMedium,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                   ),
+                                  SizedBox(height: 10),
                                   Row(
                                     children: [
-                                      Icon(Icons.star_outline,
-                                          size: 15, color: Colors.grey),
+                                      Icon(Icons.star,
+                                          size: 18, color: Colors.yellow),
                                       SizedBox(width: 5),
                                       Text(libro.nota!.toStringAsFixed(2),
-                                          style: textTheme.caption),
+                                          style: textTheme.bodyMedium),
                                       SizedBox(width: 20),
-                                      Text("Páginas: "+libro.pag!.toStringAsFixed(0),
-                                        style: textTheme.caption)
+                                      Text(
+                                          "Páginas: " +
+                                              libro.pag!.toStringAsFixed(0),
+                                          style: textTheme.bodyMedium)
                                     ],
                                   ),
                                 ],
@@ -159,9 +167,15 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 20),
+                        Text(
+                          "Resumen",
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
                         Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
                           child: Text(
                             libro.resumen!,
                             textAlign: TextAlign.justify,
@@ -169,8 +183,9 @@ class _DetailsScreen_state extends State<DetailsScreen> {
                           ),
                         ),
                         TextButton(
-                          style:
-                              TextButton.styleFrom(foregroundColor: Colors.pink, backgroundColor: Colors.white60),
+                          style: TextButton.styleFrom(
+                              foregroundColor: Colors.pink,
+                              backgroundColor: Colors.white60),
                           onPressed: () => Navigator.pushReplacementNamed(
                               context, 'comment',
                               arguments: idLibro),

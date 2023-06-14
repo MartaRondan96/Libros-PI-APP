@@ -96,11 +96,7 @@ class __Form extends State<_Form> {
   Widget build(BuildContext context) {
     final notaForm = Provider.of<ValoracionFormProvider>(context);
     final valoracionService = ValoracionService();
-    //final departmentProvider = Provider.of<DepartmentFormProvider>(context);
-    List<dynamic> options = [
-      [false, "No Resuelto"],
-      [true, "Resuelto"]
-    ];
+ 
 
     return Container(
       child: Form(
@@ -143,14 +139,14 @@ class __Form extends State<_Form> {
                         final String? errorMessage = await valoracionService.addValoracion(
                             idLibro, notaForm.valoracion);
                         if (errorMessage == '200') {
-                          customToast('Created', context);
+                          customToast('Valoración añadida', context);
                           Navigator.pushReplacementNamed(
                               context, 'details', arguments:idLibro);
                         } else if (errorMessage == '500') {
                           customToast('No se ha podido poner la valoración', context);
                           notaForm.isLoading = false;
                         } else {
-                          customToast('Server error', context);
+                          customToast('Error interno', context);
                         }
                       })
           ],

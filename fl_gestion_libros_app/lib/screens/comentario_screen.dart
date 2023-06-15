@@ -125,6 +125,11 @@ class __Form extends State<_Form> {
                 onPressed: commentForm.isLoading
                     ? null
                     : () async {
+                         if (commentForm.comentario.isEmpty){
+                              customToast("Escribe un comentario", context);
+                            }
+                          else{ 
+                        
                         FocusScope.of(context).unfocus();
                         final authService =
                             Provider.of<AuthService>(context, listen: false);
@@ -144,7 +149,7 @@ class __Form extends State<_Form> {
                         } else {
                           customToast('Server error', context);
                         }
-                      })
+  }})
           ],
         ),
       ),

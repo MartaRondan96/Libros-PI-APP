@@ -130,6 +130,13 @@ class __Form extends State<_Form> {
                 onPressed: notaForm.isLoading
                     ? null
                     : () async {
+                       if (notaForm.valoracion.isEmpty){
+                              customToast("Escribe una valoración", context);
+                            } else{ 
+                            if(int.parse(notaForm.valoracion)<=0 || int.parse(notaForm.valoracion)>10){
+                              customToast("Establece una valoración entre 0 y 10", context);
+                             }
+                          else{ 
                         FocusScope.of(context).unfocus();
                         final authService =
                             Provider.of<AuthService>(context, listen: false);
@@ -148,7 +155,7 @@ class __Form extends State<_Form> {
                         } else {
                           customToast('Error interno', context);
                         }
-                      })
+                      }}})
           ],
         ),
       ),

@@ -110,14 +110,19 @@ class _LoginForm extends StatelessWidget {
                             loginForm.username, loginForm.password);
 
                         final spliter = data?.split(',');
-
+                    
                         if (spliter?[1] == '200') {
                           if (spliter?[2] == 'false') {
                             customToast('Usuario no activo', context);
                             loginForm.isLoading=false;
                           } else {
+                              if (spliter?[0] == 'ROLE_USER') {
                               Navigator.pushReplacementNamed(
                                   context, 'catalogo_screen');
+                            } else {
+                              customToast('Admin: No tienes acceso', context);
+                              Navigator.pushReplacementNamed(context, 'login');
+                            }
                           }
                         } else {
                           customToast(

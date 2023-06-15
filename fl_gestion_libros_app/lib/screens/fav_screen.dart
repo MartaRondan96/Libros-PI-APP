@@ -35,19 +35,21 @@ class _Fav_screenState extends State<Fav_screen> {
 
     getLibrosFav();
   }
+
   @override
   Widget build(BuildContext context) {
-     final size = MediaQuery.of(context).size;
-     void _onItemTapped(int index) {
+    final size = MediaQuery.of(context).size;
+    void _onItemTapped(int index) {
       if (index == 0) {
         Navigator.pushReplacementNamed(context, 'catalogo_screen');
       } else {
         Navigator.pushReplacementNamed(context, 'fav_screen');
-        }
-        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:  Color.fromRGBO(72, 71, 75, 1),
+        backgroundColor: Color.fromRGBO(72, 71, 75, 1),
         title: Text('Libros favoritos'),
         elevation: 0,
       ),
@@ -55,43 +57,53 @@ class _Fav_screenState extends State<Fav_screen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-        width: double.infinity,
-        height: size.height * 0.5,
-        child: Swiper(
-          itemCount: libros.length,
-          layout: SwiperLayout.STACK,
-          itemWidth: size.width * 0.6,
-          itemHeight: size.height * 0.4,
-          itemBuilder: (context, index) {
-            String image='assets/'+libros[index].imagen!;
-            return GestureDetector(
-              onTap: () => Navigator.pushReplacementNamed(context, 'details',arguments: libros[index].id),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: 
-                  FadeInImage(
-                    placeholder: const AssetImage('assets/no-image.jpg'),
-                    image: AssetImage(image),
-                    fit: BoxFit.cover,
-                  ),
-      
+              Visibility(
+                child: Column(
+                  children: [
+                    SizedBox(height: 320),
+                    Text('No hay libros favoritos todavía.', 
+                    style: TextStyle(fontSize: 16)),
+                  ],
+                ),
+                visible: libros.length == 0,
               ),
-            );
-          },
-      
-        ),
-          ),
+              Container(
+                width: double.infinity,
+                height: size.height * 0.5,
+                child: Swiper(
+                  itemCount: libros.length,
+                  layout: SwiperLayout.STACK,
+                  itemWidth: size.width * 0.6,
+                  itemHeight: size.height * 0.4,
+                  itemBuilder: (context, index) {
+                    String image = 'assets/' + libros[index].imagen!;
+                    return GestureDetector(
+                      onTap: () => Navigator.pushReplacementNamed(
+                          context, 'details',
+                          arguments: libros[index].id),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: FadeInImage(
+                          placeholder: const AssetImage('assets/no-image.jpg'),
+                          image: AssetImage(image),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-         BottomNavigationBarItem(
+          BottomNavigationBarItem(
               icon: Icon(Icons.book, color: Colors.orange), label: 'Libros'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border , color: Colors.pink), label: 'Favoritos'),
+              icon: Icon(Icons.favorite_border, color: Colors.pink),
+              label: 'Favoritos'),
         ],
         currentIndex: 1, //New
         onTap: _onItemTapped,

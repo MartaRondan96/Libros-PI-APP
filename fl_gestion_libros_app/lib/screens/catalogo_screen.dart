@@ -73,9 +73,6 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
           ],
         ),
         elevation: 0,
-        actions: [
-          // IconButton(onPressed: () {}, icon: Icon(Icons.search_outlined))
-        ],
       ),
        body: Background(
       child: GridView.builder(

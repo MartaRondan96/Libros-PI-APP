@@ -50,12 +50,15 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:  Color.fromRGBO(72, 71, 75, 1),
+        backgroundColor: Color.fromRGBO(72, 71, 75, 1),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: const Icon(Icons.login_outlined, color: Colors.white,),
+              icon: const Icon(
+                Icons.login_outlined,
+                color: Colors.white,
+              ),
               color: Color.fromRGBO(0, 0, 0, 1),
               onPressed: () {
                 Provider.of<AuthService>(context, listen: false).logout();
@@ -64,7 +67,10 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
             ),
             Text('Catálogo de libros'),
             IconButton(
-              icon: const Icon(Icons.account_circle_sharp, color: Colors.white,),
+              icon: const Icon(
+                Icons.account_circle_sharp,
+                color: Colors.white,
+              ),
               color: Color.fromRGBO(0, 0, 0, 1),
               onPressed: () {
                 Navigator.pushReplacementNamed(context, 'update_user_screen');
@@ -74,45 +80,65 @@ class _Catalogo_screenState extends State<Catalogo_screen> {
         ),
         elevation: 0,
       ),
-       body: Background(
-      child: GridView.builder(
-        padding: EdgeInsets.all(16),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          childAspectRatio: size.width / (size.height * 0.8),
-        ),
-        itemCount: libros.length,
-        itemBuilder: (context, index) {
-          String image = 'assets/' + libros[index].imagen!;
-          return GestureDetector(
-            onTap: () => Navigator.pushReplacementNamed(
-                context, 'details',
-                arguments: libros[index].id),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: FadeInImage(
-                  placeholder: const AssetImage('assets/no-image.jpg'),
-                  image: AssetImage(image),
-                  fit: BoxFit.cover,
+      body: Background(
+        child: GridView.builder(
+          padding: EdgeInsets.all(16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: size.width / (size.height * 0.8),
+          ),
+          itemCount: libros.length,
+          itemBuilder: (context, index) {
+            String image = 'assets/' + libros[index].imagen!;
+            try {
+              AssetImage assetImage = AssetImage(image);
+              return GestureDetector(
+                onTap: () => Navigator.pushReplacementNamed(context, 'details',
+                    arguments: libros[index].id),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image(
+                      image: assetImage,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          );
-        },
+              );
+            } catch (e) {
+              AssetImage backupImage = AssetImage('assets/no-image.jpg');
+              return GestureDetector(
+                onTap: () => Navigator.pushReplacementNamed(context, 'details',
+                    arguments: libros[index].id),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image(
+                      image: backupImage,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              );
+            }
+          },
+        ),
       ),
-    ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-         BottomNavigationBarItem(
+          BottomNavigationBarItem(
               icon: Icon(Icons.book, color: Colors.orange), label: 'Libros'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border , color: Colors.pink), label: 'Favoritos'),
+              icon: Icon(Icons.favorite_border, color: Colors.pink),
+              label: 'Favoritos'),
         ],
         currentIndex: 0, //New
         onTap: _onItemTapped,

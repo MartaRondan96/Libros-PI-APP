@@ -66,8 +66,8 @@ class _RegisterForm extends StatelessWidget {
               autocorrect: false,
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
-                  hintText: 'Username',
-                  labelText: 'Username',
+                  hintText: 'Nombre de usuario',
+                  labelText: 'Nombre de usuario',
                   prefixIcon: Icons.account_circle_sharp),
               onChanged: (value) => registerForm.username = value,
             ),
@@ -89,7 +89,7 @@ class _RegisterForm extends StatelessWidget {
               keyboardType: TextInputType.text,
               decoration: InputDecorations.authInputDecoration(
                   hintText: 'Repite Password',
-                  labelText: 'Respite Password',
+                  labelText: 'Repite Password',
                   prefixIcon: Icons.account_circle_sharp),
               onChanged: (value) => registerForm.r_password = value,
             ),
